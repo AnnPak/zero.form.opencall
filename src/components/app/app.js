@@ -6,7 +6,7 @@ import styles from './app.module.scss';
 
 function App() {
   return (
-    <div className={styles.App}>
+    <div className={styles.app}>
       <Header />
       <main>
         <Form />
