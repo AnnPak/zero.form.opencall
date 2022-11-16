@@ -1,9 +1,16 @@
+import Header from '../header/header';
+import Form from '../form/form';
 
-import './app.scss';
+import styles from './app.module.scss';
+
 
 function App() {
   return (
-    <div className="App">
+    <div className={styles.App}>
+      <Header />
+      <main>
+        <Form />
+      </main>
     </div>
   );
 }
