@@ -1,5 +1,5 @@
 import Header from '../header/header';
-import Form from '../form/form';
+import FormContainer from '../form/form';
 
 import styles from './app.module.scss';
 
@@ -9,7 +9,7 @@ function App() {
     <div className={styles.app}>
       <Header />
       <main>
-        <Form />
+        <FormContainer />
       </main>
     </div>
   );
