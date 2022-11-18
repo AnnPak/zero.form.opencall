@@ -37,6 +37,13 @@
   input::placeholder {
     color: #484e53;
   }
+  input:focus,
+  textarea:focus {
+    background: none;
+    outline: none;
+    border: 1px solid #2f343a;
+    box-shadow: 0 0 0 0.15rem rgb(179 179 179 / 25%);
+  }
 
   .inputDescr {
     width: 95%;
@@ -59,4 +66,8 @@
   font-size: 20px;
   line-height: 24px;
   margin-left: 8px;
+}
+
+.fileUploadInput{
+  color:#6c757d !important;
 }
