@@ -34,6 +34,10 @@
     color: #fff;
   }
 
+  textarea:focus, input:focus {
+    color: #fff;
+}
+
   input::placeholder {
     color: #484e53;
   }
@@ -70,4 +74,8 @@
 
 .fileUploadInput{
   color:#6c757d !important;
+}
+
+.dNone{
+  display: none;
 }

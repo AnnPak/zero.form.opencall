@@ -9,12 +9,14 @@ export const TextInput = (props) => {
     inputType,
     inputName,
     inputPlaceholder,
-    decsription,
+    description,
+    display,
+    value
   } = props;
   return (
 
 
-    <Form.Group className={classnames(styles.inputWrapper, isRequired && styles.required)} controlId="formBasicEmail">
+    <Form.Group  className={classnames(styles.inputWrapper, isRequired && styles.required, !display && styles.dNone)} controlId="formBasicEmail">
       <p className={styles.inputTitle}>{title}</p>
       <p className={styles.inputSubtitle}>{subtitle}.</p>
 
@@ -23,11 +25,12 @@ export const TextInput = (props) => {
         {...(inputType === "textarea" ? { rows: "5" } : {})}
         {...(inputType !== "textarea" ? { type: { inputType } } : {})}
         name={inputName}
-        placeholder={inputPlaceholder} />
+        placeholder={inputPlaceholder}
+        value={value}/>
 
 
       <Form.Text className={styles.inputDescr}>
-        {decsription}
+        {description}
       </Form.Text>
     </Form.Group>
 
@@ -39,7 +42,7 @@ export const FileInput = (props) => {
     title,
     subtitle,
     inputName,
-    decsription,
+    description,
   } = props;
   return (
     <Form
@@ -47,19 +50,20 @@ export const FileInput = (props) => {
       method="post"
       enctype="multipart/form-data"
       className={classnames(styles.inputWrapper, styles.fileUpload)}
+      variant='dark'
     >
-      <Form.Group>
+      <Form.Group variant='dark'>
         <p className={styles.inputTitle}>{title}</p>
         <p className={styles.inputSubtitle}>{subtitle}.</p>
-        <Form.Control className={styles.fileUploadInput} name={inputName} type="file" size="sm" />
+        <Form.Control variant="dark" className={styles.fileUploadInput} name={inputName} type="file" size="sm" />
       </Form.Group>
       <Form.Group>
-        <Button variant="info" type="submit">
+        <Button variant="dark" type="submit" >
           Upload
         </Button>
       </Form.Group>
-      <Form.Text className={styles.inputDescr}>
-        {decsription}
+      <Form.Text className={styles.inputDescr} variant='dark'>
+        {description}
       </Form.Text>
     </Form>
   )
