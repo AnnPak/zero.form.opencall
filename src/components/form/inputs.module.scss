@@ -1,81 +1,105 @@
 .inputWrapper {
-  background: rgba(255, 255, 255, 0.08);
-  padding: 32px 40px;
-  margin-top: 1px;
+    background: rgba(255, 255, 255, 0.08);
+    padding: 32px 40px;
+    margin-top: 1px;
 
-  .inputTitle {
-    position: relative;
-    margin: 0;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 20px;
-    line-height: 24px;
-  }
-  .inputSubtitle {
-    margin: 0;
-    margin-top: 8px;
-    font-weight: 400;
-    font-size: 13px;
-    line-height: 20px;
-  }
+    .inputTitle {
+        position: relative;
+        margin: 0;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 24px;
+    }
+    .inputSubtitle {
+        margin: 0;
+        margin-top: 8px;
+        font-weight: 400;
+        font-size: 13px;
+        line-height: 20px;
+    }
 
-  input,
-  textarea {
-    padding: 6px 14px;
-    margin-top: 16px;
-    width: 95%;
-    background: none;
-    border-radius: 8px;
-    border: 1px solid #2f343a;
-    border-radius: 4px;
-    font-weight: 400;
-    font-size: 15px;
-    line-height: 24px;
-    color: #fff;
-  }
+    input,
+    textarea {
+        padding: 6px 14px;
+        margin-top: 16px;
+        width: 95%;
+        background: none;
+        border-radius: 8px;
+        border: 1px solid #2f343a;
+        border-radius: 4px;
+        font-weight: 400;
+        font-size: 15px;
+        line-height: 24px;
+        color: #fff;
+    }
 
-  textarea:focus, input:focus {
-    color: #fff;
-}
+    textarea:focus,
+    input:focus {
+        color: #fff;
+    }
 
-  input::placeholder {
-    color: #484e53;
-  }
-  input:focus,
-  textarea:focus {
-    background: none;
-    outline: none;
-    border: 1px solid #2f343a;
-    box-shadow: 0 0 0 0.15rem rgb(179 179 179 / 25%);
-  }
+    input::placeholder {
+        color: #484e53;
+    }
+    input:focus,
+    textarea:focus {
+        background: none;
+        outline: none;
+        border: 1px solid #2f343a;
+        box-shadow: 0 0 0 0.15rem rgb(179 179 179 / 25%);
+    }
 
-  .inputDescr {
-    width: 95%;
-    border-left: 1px solid #6c757d;
-    padding-left: 8px;
-    margin-top: 16px;
-    position: relative;
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 14px;
-    color: #6c757d;
-  }
+    .inputDescr {
+        width: 95%;
+        border-left: 1px solid #6c757d;
+        padding-left: 8px;
+        margin-top: 16px;
+        position: relative;
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 14px;
+        color: #6c757d;
+    }
 }
 
 .inputWrapper.required .inputTitle:after {
-  content: "*";
-  position: absolute;
-  color: #e35d6a;
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 24px;
-  margin-left: 8px;
+    content: "*";
+    position: absolute;
+    color: #e35d6a;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    margin-left: 8px;
 }
 
-.fileUploadInput{
-  color:#6c757d !important;
+.fileUploadInput {
+    color: #6c757d !important;
 }
 
-.dNone{
-  display: none;
+.uploadGroup {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 16px;
+    input[type="file"] {
+        margin-top: 0;  
+        padding: 0 8px;
+        display: inline;
+        width: 80%;
+    }
+
+    input[type="file"]::file-selector-button {
+        height: 45px;
+        border-radius: 4px;
+        background: #2f343a;
+        color: #fff;
+        font-weight: 400;
+        font-size: 15px;
+        line-height: 24px;
+    }
+}
+
+.dNone {
+    display: none;
 }

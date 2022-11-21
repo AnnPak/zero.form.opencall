@@ -50,19 +50,20 @@ export const FileInput = (props) => {
       method="post"
       enctype="multipart/form-data"
       className={classnames(styles.inputWrapper, styles.fileUpload)}
-      variant='dark'
     >
-      <Form.Group variant='dark'>
+      <Form.Group>
         <p className={styles.inputTitle}>{title}</p>
         <p className={styles.inputSubtitle}>{subtitle}.</p>
-        <Form.Control variant="dark" className={styles.fileUploadInput} name={inputName} type="file" size="sm" />
+        <div className={styles.uploadGroup}>
+          <Form.Control className={styles.fileUploadInput} name={inputName} type="file" size="sm" />
+          <Button type="submit" variant="dark">
+            Upload
+          </Button>
+        </div>
+        
       </Form.Group>
-      <Form.Group>
-        <Button variant="dark" type="submit" >
-          Upload
-        </Button>
-      </Form.Group>
-      <Form.Text className={styles.inputDescr} variant='dark'>
+    
+      <Form.Text className={styles.inputDescr}>
         {description}
       </Form.Text>
     </Form>
