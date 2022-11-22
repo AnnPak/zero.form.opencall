@@ -14,8 +14,8 @@ const FormContainer = () => {
         setFormData(data.filter((form) => form.type === "high-poly"));
     }, []);
 
-    function createHtmlDescription() {
-      return {__html: formData[0].display_description};
+    function createHtml(value) {
+      return {__html: value};
     }
 
     return (
@@ -25,7 +25,7 @@ const FormContainer = () => {
                     <div className={styles.formHeader}>
                         <p className={styles.title}>{formData[0].display_title}</p>
                         <p className={styles.subtitle}>
-                          <div dangerouslySetInnerHTML={createHtmlDescription()}/></p>
+                          <div dangerouslySetInnerHTML={createHtml(formData[0].display_description)}/></p>
                     </div>
 
                     <Form className={styles.formBody}>
@@ -35,17 +35,18 @@ const FormContainer = () => {
                                 case "hidden":
                                 case "textarea":
                                 case "text":
+                                  // const description = createHtml(element.display_description)
                                     returnElement = (
                                         <TextInput
                                             key={element.field_name}
                                             isRequired={true}
                                             title={element.display_title}
-                                            subtitle={element.display_description}
+                                            subtitle={element.display_subtitle}
                                             inputType={element.field_type}
                                             inputName={element.field_name}
-                                            inputPlaceholder=""
+                                            inputPlaceholder={element.field_placeholder}
                                             display={element.display}
-                                            description={element.display_description}
+                                            description={createHtml(element.display_description)}
                                             value={element.value}
                                         />
                                     );
@@ -56,9 +57,9 @@ const FormContainer = () => {
                                         <FileInput
                                             key={element.field_name}
                                             title={element.display_title}
-                                            subtitle={element.display_description}
+                                            subtitle={element.display_subtitle}
                                             inputName={element.field_name}
-                                            description={element.display_description}
+                                            description={createHtml(element.display_description)}
                                         />
                                     );
                                     break;

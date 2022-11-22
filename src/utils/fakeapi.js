@@ -5,36 +5,37 @@ export const data = [
         "display_description": "Submit your digital fashion piece here.\nDetailed requirements:\n<a href=\"https://platform.zero10.app\">https://platform.zero10.app</a>",
         "fields": [
             {
-                "field_name":"Item name",
+                "field_name":"name",
                 "field_type": "text",
-                "display_title": "Tell us a little bit more about your work and the ideas behind it.",
-                "display_description": "It will be used in the ZERO10 Platform listings",
+                "field_placeholder": 'Disappearing Pants',
+                "display_title": "Item name",
+                "display_subtitle":"Tell us a little bit more about your work and the ideas behind it.",
+                "display_description": "<p>It will be used in the ZERO10 Platform listings</p>",
                 "required": true,
-                "display": true
             },
 
             {
-                "field_name":"Describe the item",
+                "field_name":"description",
                 "field_type": "textarea",
-                "display_title": "Whats's the name of the item?",
-                "display_description": "Good description: \"This item is inspired by my grandmother's collection of antique rugs and the sunny spring days spent in her garden.\"Bad description: \"short jacket\".",
+                "field_placeholder": 'Add a description',
+                "display_title": "Describe the item",
+                "display_subtitle": "Whats's the name of the item?",
+                "display_description": "<p>Good description: \"This item is inspired by my grandmother's collection of antique rugs and the sunny spring days spent in her garden.\" <br><br>Bad description: \"short jacket\".</p>",
                 "required": true,
-                "display": true
             },
 
             {
-                "field_name":"ZPRJ file (3D Item) link",
+                "field_name":"3ditem",
                 "field_type": "file",
-                "display_title": "ZPRJ file",
-                "display_description": "Garment project made in CLO or Marvelous",
+                "display_title": "ZPRJ file (3D Item) link",
+                "display_subtitle": "ZPRJ file",
+                "display_description": "<p>Garment project made in CLO or Marvelous</p>",
                 "required": true,
-                "display": true
             },
             {
                 "field_type": "hidden",
                 "field_name": "Submission type",
                 "required": true,
-                "display": false,
                 "value": "high-poly"
             }
         ]
