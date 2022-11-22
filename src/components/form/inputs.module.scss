@@ -23,7 +23,7 @@
     textarea {
         padding: 6px 14px;
         margin-top: 16px;
-        width: 95%;
+        width: 100%;
         background: none;
         border-radius: 8px;
         border: 1px solid #2f343a;
@@ -51,8 +51,8 @@
     }
 
     .inputDescr {
+        position: relative;
         width: 95%;
-        border-left: 1px solid #6c757d;
         padding-left: 8px;
         margin-top: 16px;
         position: relative;
@@ -60,6 +60,22 @@
         font-size: 12px;
         line-height: 14px;
         color: #6c757d;
+    }
+
+    .inputDescr p{
+        position: relative;
+        margin: 0;
+        padding-left: 8px;
+        margin-top: -10px;
+    }
+
+    .inputDescr p::before{
+        content:'';
+        position: absolute;
+        height: 100%;
+        width: 0.8px;
+        left: 0;
+        background-color: #6c757d;
     }
 }
 
@@ -83,7 +99,7 @@
     justify-content: space-between;
     margin-top: 16px;
     input[type="file"] {
-        margin-top: 0;  
+        margin-top: 0;
         padding: 0 8px;
         display: inline;
         width: 80%;
@@ -98,8 +114,13 @@
         font-size: 15px;
         line-height: 24px;
     }
-}
+    input[type="file"]:hover::file-selector-button {
+        background-color: rgb(242, 8, 8);
+        border: 0px;
+        border-right: 1px solid #990000;
+      }
 
-.dNone {
-    display: none;
+    button[type="submit"] {
+        margin-bottom: 9px;
+    }
 }
