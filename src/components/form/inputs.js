@@ -15,7 +15,7 @@ export const TextInput = (props) => {
 
     return (
         <Form.Group
-            className={classnames(styles.inputWrapper, isRequired && styles.required)}
+            className={classnames(styles.inputWrapper, isRequired && styles.required, inputType === "hidden" && styles.dNone)}
             controlId="formBasicEmail"
         >
             {title && <p className={styles.inputTitle}>{title}</p>}
