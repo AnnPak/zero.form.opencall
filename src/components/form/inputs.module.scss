@@ -105,22 +105,19 @@
         width: 80%;
     }
 
-    input[type="file"]::file-selector-button {
+    input::file-selector-button {
         height: 45px;
-        border-radius: 4px;
         background: #2f343a;
         color: #fff;
         font-weight: 400;
         font-size: 15px;
         line-height: 24px;
+        border-radius: 8px;
     }
-    input[type="file"]:hover::file-selector-button {
-        background-color: rgb(242, 8, 8);
-        border: 0px;
-        border-right: 1px solid #990000;
-      }
 
-    button[type="submit"] {
-        margin-bottom: 9px;
+    input:hover:not(:disabled):not([readonly])::file-selector-button {
+        background-color: #424649;
+        border-color: #424649;
     }
+
 }
