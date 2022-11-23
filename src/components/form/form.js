@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useParams, useSearchParams, useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -9,23 +10,44 @@ import styles from "./form.module.scss";
 
 const FormContainer = () => {
     const [formData, setFormData] = useState(null);
+    const [formType, setFormType] = useState(null);
+    const { userKey } = useParams();
+
+    // eslint-disable-next-line
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const navigate = useNavigate();
 
     useEffect(() => {
-        setFormData(data.filter((form) => form.type === "high-poly"));
-    }, []);
+        const formParam = searchParams.get("form_type");
+
+        if (!formParam.includes("highPoly") && !formParam.includes("lowPoly")) {
+            return navigate("/error");
+        }
+
+        formParam.includes("highPoly") && setFormType("high-poly");
+        formParam.includes("lowPoly") && setFormType("low-poly");
+        // eslint-disable-next-line
+    }, [searchParams]);
+
+    useEffect(() => {
+        formType && setFormData(data.filter((form) => form.type === formType));
+    }, [formType]);
 
     function createHtml(value) {
-      return {__html: value};
+        return { __html: value };
     }
 
     return (
-        <section>
+        <>
             {formData && (
-                <>
+                <section>
                     <div className={styles.formHeader}>
                         <p className={styles.title}>{formData[0].display_title}</p>
-                        <p className={styles.subtitle}>
-                          <div dangerouslySetInnerHTML={createHtml(formData[0].display_description)}/></p>
+                        <p
+                            className={styles.subtitle}
+                            dangerouslySetInnerHTML={createHtml(formData[0].display_description)}
+                        />
                     </div>
 
                     <Form className={styles.formBody}>
@@ -35,7 +57,7 @@ const FormContainer = () => {
                                 case "hidden":
                                 case "textarea":
                                 case "text":
-                                  // const description = createHtml(element.display_description)
+                                    // const description = createHtml(element.display_description)
                                     returnElement = (
                                         <TextInput
                                             key={element.field_name}
@@ -68,8 +90,13 @@ const FormContainer = () => {
                             }
                             return returnElement;
                         })}
+                         <Form.Control
+                                type='hidden'
+                                name='user'
+                                value={userKey}
+                            />
                     </Form>
-                </>
+                </section>
             )}
 
             {/* <Form
@@ -90,7 +117,7 @@ const FormContainer = () => {
             </Button>
           </Form.Group>
         </Form> */}
-        </section>
+        </>
     );
 };
 
