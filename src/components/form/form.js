@@ -21,7 +21,7 @@ const FormContainer = () => {
     useEffect(() => {
         const formParam = searchParams.get("form_type");
 
-        if (!formParam.includes("highPoly") && !formParam.includes("lowPoly")) {
+        if (!formParam?.includes("highPoly") && !formParam?.includes("lowPoly")) {
             return navigate("/error");
         }
 

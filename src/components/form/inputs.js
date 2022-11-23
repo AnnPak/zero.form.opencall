@@ -41,7 +41,7 @@ export const FileInput = (props) => {
         <Form
             action="http://localhost:8080/upload_file"
             method="post"
-            enctype="multipart/form-data"
+            encType="multipart/form-data"
             className={classnames(styles.inputWrapper, styles.fileUpload)}
         >
             <Form.Group>

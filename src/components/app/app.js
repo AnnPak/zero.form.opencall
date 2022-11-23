@@ -10,6 +10,7 @@ function App() {
                 <Header />
                 <main>
                   <Routes>
+                    <Route path="/" element={<ErrorPage />}/> 
                     <Route path="/:userKey" element={<Home />}/> 
                     <Route path="/error" element={<ErrorPage />}/> 
                   </Routes>
