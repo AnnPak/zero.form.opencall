@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { useParams, useSearchParams, useNavigate } from "react-router-dom";
-import Form from "react-bootstrap/Form";
-import "bootstrap/dist/css/bootstrap.min.css";
+import { Form, Button } from "react-bootstrap";
+import { SuccessResponse, ErrorResponse } from "../responses/responses";
+import classnames from "classnames";
 
 import { TextInput, FileInput } from "./inputs";
 import { data } from "../../utils/fakeapi";
 
 import styles from "./form.module.scss";
+import styleInputs from "./inputs.module.scss";
 
 const FormContainer = () => {
     const [formData, setFormData] = useState(null);
@@ -90,11 +92,12 @@ const FormContainer = () => {
                             }
                             return returnElement;
                         })}
-                         <Form.Control
-                                type='hidden'
-                                name='user'
-                                value={userKey}
-                            />
+                        <Form.Control type="hidden" name="user" value={userKey} />
+                        <div className={classnames(styleInputs.inputWrapper, styleInputs.inputWrapperLast )}>
+                            <Button type="submit" variant="info" className={styles.buttonInfo}>
+                                Submit
+                            </Button>
+                        </div>
                     </Form>
                 </section>
             )}

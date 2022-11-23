@@ -79,6 +79,10 @@
     }
 }
 
+.inputWrapperLast{
+    border-radius:  0 0 8px 8px;
+}
+
 .inputWrapper.required .inputTitle:after {
     content: "*";
     position: absolute;
