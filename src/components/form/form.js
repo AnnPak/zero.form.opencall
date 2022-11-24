@@ -13,12 +13,23 @@ import styleInputs from "./inputs.module.scss";
 const FormContainer = () => {
     const [formData, setFormData] = useState(null);
     const [formType, setFormType] = useState(null);
+    const [formValue, setFormValue] = useState({});
     const { userKey } = useParams();
+
+    const handleForm = (name, value) => {
+        setFormValue({ ...formValue, [name]: value });
+    };
 
     // eslint-disable-next-line
     const [searchParams, setSearchParams] = useSearchParams();
 
     const navigate = useNavigate();
+    const onSubmit = (e) => {
+        e.preventDefault();
+
+        alert(JSON.stringify(formValue));
+        e.target.reset();
+    };
 
     useEffect(() => {
         const formParam = searchParams.get("form_type");
@@ -52,7 +63,7 @@ const FormContainer = () => {
                         />
                     </div>
 
-                    <Form className={styles.formBody}>
+                    <Form className={styles.formBody} onSubmit={onSubmit}>
                         {formData[0].fields.map((element) => {
                             let returnElement = null;
                             switch (element.field_type) {
@@ -72,6 +83,7 @@ const FormContainer = () => {
                                             display={element.display}
                                             description={createHtml(element.display_description)}
                                             value={element.value}
+                                            handleForm={handleForm}
                                         />
                                     );
 
@@ -93,7 +105,12 @@ const FormContainer = () => {
                             return returnElement;
                         })}
                         <Form.Control type="hidden" name="user" value={userKey} />
-                        <div className={classnames(styleInputs.inputWrapper, styleInputs.inputWrapperLast )}>
+                        <div
+                            className={classnames(
+                                styleInputs.inputWrapper,
+                                styleInputs.inputWrapperLast
+                            )}
+                        >
                             <Button type="submit" variant="info" className={styles.buttonInfo}>
                                 Submit
                             </Button>

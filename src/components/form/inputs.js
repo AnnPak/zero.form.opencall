@@ -11,6 +11,7 @@ export const TextInput = (props) => {
         inputPlaceholder,
         description,
         value,
+        handleForm
     } = props;
 
     return (
@@ -26,8 +27,10 @@ export const TextInput = (props) => {
                 {...(inputType === "textarea" ? { rows: "5" } : {})}
                 type={inputType}
                 name={inputName}
+                required={isRequired}
                 placeholder={inputPlaceholder}
                 value={value}
+                onChange={(e) => handleForm(inputName, e.target.value)}
             />
 
             {description && <Form.Text className={styles.inputDescr} dangerouslySetInnerHTML={description} />}
@@ -36,7 +39,7 @@ export const TextInput = (props) => {
 };
 
 export const FileInput = (props) => {
-    const { title, subtitle, inputName, description } = props;
+    const { title, subtitle, inputName, description, isRequired } = props;
     return (
         <Form
             action="http://localhost:8080/upload_file"
@@ -54,6 +57,7 @@ export const FileInput = (props) => {
                         type="file"
                         size="sm"
                         variant="dark"
+                        required={isRequired}
                     />
                     <Button type="submit" variant="dark">
                         Upload
