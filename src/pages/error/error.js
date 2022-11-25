@@ -4,7 +4,7 @@ const ErrorPage = () => {
   return(
     <>
       Нет параметров в URL
-      <Link to='/shrrCM0sSgp8COfbJ?prefill_Author=153&form_type="highPoly"'> Тестовая ссылка</Link>
+      <Link to='/shrrCM0sSgp8COfbJ?prefill_Author=153&form_type=highPoly'> Тестовая ссылка</Link>
     </>
   )
 }

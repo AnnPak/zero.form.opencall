@@ -14,6 +14,7 @@ const FormContainer = () => {
     const [formData, setFormData] = useState(null);
     const [formType, setFormType] = useState(null);
     const [formValue, setFormValue] = useState({});
+    const [formValue2, setFormValue2] = useState({});
     const { userKey } = useParams();
 
     const handleForm = (name, value) => {
@@ -27,25 +28,34 @@ const FormContainer = () => {
     const onSubmit = (e) => {
         e.preventDefault();
 
+        const result = Object.values(formValue).some((item) => item === '');
+
         alert(JSON.stringify(formValue));
+        alert('Пустое значние: '+ result);
         e.target.reset();
     };
 
     useEffect(() => {
         const formParam = searchParams.get("form_type");
 
-        if (!formParam?.includes("highPoly") && !formParam?.includes("lowPoly")) {
+        if (formParam !== "highPoly" && formParam !== "lowPoly") {
             return navigate("/error");
         }
-
-        formParam.includes("highPoly") && setFormType("high-poly");
-        formParam.includes("lowPoly") && setFormType("low-poly");
+        formParam === "highPoly" && setFormType("high-poly");
+        formParam === "lowPoly" && setFormType("low-poly");
         // eslint-disable-next-line
     }, [searchParams]);
 
     useEffect(() => {
         formType && setFormData(data.filter((form) => form.type === formType));
     }, [formType]);
+
+    useEffect(() => {
+        formData && formData[0].fields.map((element) => {
+            const value = {[element.field_name]: ''}
+            return setFormValue(formValue2 =>({...formValue2, ...value}) );
+        });
+    }, [formData]);
 
     function createHtml(value) {
         return { __html: value };
