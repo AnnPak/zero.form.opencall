@@ -14,8 +14,27 @@ const FormContainer = () => {
     const [formData, setFormData] = useState(null);
     const [formType, setFormType] = useState(null);
     const [formValue, setFormValue] = useState({});
-    const [formValue2, setFormValue2] = useState({});
     const { userKey } = useParams();
+
+    const [validated, setValidated] = useState(false);
+
+    const handleSubmit = (event) => {
+        const form = event.currentTarget;
+        console.log(form.checkValidity());
+
+        if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+
+        const result = Object.values(formValue).some((item) => item === "");
+
+        alert(JSON.stringify(formValue));
+        alert("Пустое значние: " + result);
+        event.target.reset();
+
+        setValidated(true);
+    };
 
     const handleForm = (name, value) => {
         setFormValue({ ...formValue, [name]: value });
@@ -25,15 +44,6 @@ const FormContainer = () => {
     const [searchParams, setSearchParams] = useSearchParams();
 
     const navigate = useNavigate();
-    const onSubmit = (e) => {
-        e.preventDefault();
-
-        const result = Object.values(formValue).some((item) => item === '');
-
-        alert(JSON.stringify(formValue));
-        alert('Пустое значние: '+ result);
-        e.target.reset();
-    };
 
     useEffect(() => {
         const formParam = searchParams.get("form_type");
@@ -51,10 +61,11 @@ const FormContainer = () => {
     }, [formType]);
 
     useEffect(() => {
-        formData && formData[0].fields.map((element) => {
-            const value = {[element.field_name]: ''}
-            return setFormValue(formValue2 =>({...formValue2, ...value}) );
-        });
+        formData &&
+            formData[0].fields.map((element) => {
+                const value = { [element.field_name]: "" };
+                return setFormValue((formValue2) => ({ ...formValue2, ...value }));
+            });
     }, [formData]);
 
     function createHtml(value) {
@@ -73,8 +84,13 @@ const FormContainer = () => {
                         />
                     </div>
 
-                    <Form className={styles.formBody} onSubmit={onSubmit}>
-                        {formData[0].fields.map((element) => {
+                    <Form
+                        className={styles.formBody}
+                        noValidate
+                        validated={validated}
+                        onSubmit={handleSubmit}
+                    >
+                        {formData[0].fields.map((element, i) => {
                             let returnElement = null;
                             switch (element.field_type) {
                                 case "hidden":
@@ -94,6 +110,8 @@ const FormContainer = () => {
                                             description={createHtml(element.display_description)}
                                             value={element.value}
                                             handleForm={handleForm}
+                                            validationCustom={`validationCustom${i}`}
+                                            invalidFeedback={element.invalid_feedback}
                                         />
                                     );
 
@@ -128,25 +146,6 @@ const FormContainer = () => {
                     </Form>
                 </section>
             )}
-
-            {/* <Form
-          action="http://localhost:8080/upload_file"
-          method="post"
-          enctype="multipart/form-data"
-        >
-          <Form.Group>
-            <Form.File
-              id="exampleFormControlFile1"
-              label="Select a File"
-              name="file"
-            />
-          </Form.Group>
-          <Form.Group>
-            <Button variant="info" type="submit">
-              Upload
-            </Button>
-          </Form.Group>
-        </Form> */}
         </>
     );
 };

@@ -12,6 +12,7 @@ export const data = [
                 "display_subtitle":"Tell us a little bit more about your work and the ideas behind it.",
                 "display_description": "<p>It will be used in the ZERO10 Platform listings</p>",
                 "required": true,
+                "invalid_feedback": 'Enter the name of the item'
             },
 
             {
@@ -22,6 +23,8 @@ export const data = [
                 "display_subtitle": "Whats's the name of the item?",
                 "display_description": "<p>Good description: \"This item is inspired by my grandmother's collection of antique rugs and the sunny spring days spent in her garden.\" <br><br>Bad description: \"short jacket\".</p>",
                 "required": true,
+                "invalid_feedback": 'Enter a description of the item'
+
             },
 
             {
@@ -31,6 +34,7 @@ export const data = [
                 "display_subtitle": "ZPRJ file",
                 "display_description": "<p>Garment project made in CLO or Marvelous</p>",
                 "required": true,
+                "invalid_feedback": 'Add the ZPrj file'
             },
             {
                 "field_type": "hidden",

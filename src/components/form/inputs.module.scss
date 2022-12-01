@@ -129,3 +129,28 @@
 .dNone{
     display: none;
 }
+
+.errorText{
+    display: none; 
+}
+.errorTextShow{
+    display: block;
+}
+
+.fileUploadInput:valid{
+    border-color: #2f343a !important; 
+    background-image:none !important;
+}
+
+.formControl:valid{
+    border-color: #2f343a !important; 
+    background-image:none !important;
+}
+
+.invalidFeedback{
+    color: #E35D6A;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 14px;
+    margin-top: 8px;
+}
