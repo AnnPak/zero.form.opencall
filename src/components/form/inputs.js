@@ -1,6 +1,9 @@
 import styles from "./inputs.module.scss";
 import classnames from "classnames";
 import { Form, Button } from "react-bootstrap";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { setFile } from "../../store/slice";
 export const TextInput = (props) => {
     const {
         isRequired,
@@ -54,11 +57,23 @@ export const TextInput = (props) => {
 
 export const FileInput = (props) => {
     const { title, subtitle, inputName, description, isRequired } = props;
+    const [fileName, setFileName] = useState(null)
+    const dispatch = useDispatch();
+
+    const uploadFile = (e) => {
+        e.preventDefault();
+        dispatch(setFile(fileName))
+
+    }
+    const addFile = (event) => {
+        setFileName(event.target.files[0]['name']);
+    }
+
     return (
         <Form
-            action="http://localhost:8080/upload_file"
-            method="post"
-            encType="multipart/form-data"
+            onSubmit={e => uploadFile(e, inputName)}
+            // method="post"
+            // encType="multipart/form-data"
             className={classnames(styles.inputWrapper, styles.fileUpload)}
         >
             <Form.Group>
@@ -72,6 +87,7 @@ export const FileInput = (props) => {
                         size="sm"
                         variant="dark"
                         required={isRequired}
+                        onChange={addFile}
                     />
                     <Button type="submit" variant="dark">
                         Upload

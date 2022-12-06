@@ -116,22 +116,23 @@ const FormContainer = () => {
                                     );
 
                                     break;
-                                case "file":
-                                    returnElement = (
-                                        <FileInput
-                                            key={element.field_name}
-                                            title={element.display_title}
-                                            subtitle={element.display_subtitle}
-                                            inputName={element.field_name}
-                                            description={createHtml(element.display_description)}
-                                        />
-                                    );
-                                    break;
+                                // case "file":
+                                //     returnElement = (
+                                //         <FileInput
+                                //             key={element.field_name}
+                                //             title={element.display_title}
+                                //             subtitle={element.display_subtitle}
+                                //             inputName={element.field_name}
+                                //             description={createHtml(element.display_description)}
+                                //         />
+                                //     );
+                                //     break;
                                 default:
                                     break;
                             }
                             return returnElement;
                         })}
+                       
                         <Form.Control type="hidden" name="user" value={userKey} />
                         <div
                             className={classnames(
@@ -144,6 +145,13 @@ const FormContainer = () => {
                             </Button>
                         </div>
                     </Form>
+                    <FileInput
+                            key='3ditem'
+                            title='"ZPRJ file (3D Item) link"'
+                            subtitle='"ZPRJ file"'
+                            inputName='"3ditem"'
+                            description={createHtml("<p>Garment project made in CLO or Marvelous</p>")}
+                        />
                 </section>
             )}
         </>
