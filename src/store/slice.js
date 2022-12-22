@@ -29,8 +29,11 @@ export const getFileUrls = createAsyncThunk(
 
 export const putFile = createAsyncThunk(
   "form/putFile",
-  async ({ res, file }) => {
-    return await request(res.payload.pre_signed_url, JSON.stringify({file: file}), "PUT");
+  async ({ res, fileObject }) => {
+    // console.log(fileObject)
+
+    console.log(JSON.stringify(fileObject))
+    return await request(res.payload.pre_signed_url, JSON.stringify(fileObject), "PUT");
   }
 );
 

@@ -63,7 +63,15 @@ export const FileInput = (props) => {
     const uploadFile = (e) => {
         e.preventDefault();
         const fileName = file.name
-        dispatch(getFileUrls({fileName, inputName})).then(res => dispatch(putFile({res, file })))
+        const fileObject = {
+            'lastModified'     : file.lastModified,
+            'lastModifiedDate' : file.lastModifiedDate,
+            'name'             : file.name,
+            'size'             : file.size,
+            'type'             : file.type
+         };  
+         
+        dispatch(getFileUrls({fileName, inputName})).then(res => dispatch(putFile({res, fileObject })))
 
     }
     const addFile = (event) => {
