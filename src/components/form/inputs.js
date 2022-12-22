@@ -4,6 +4,9 @@ import { Form, Button } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { getFileUrls, putFile } from "../../store/slice";
+
+window.Buffer = window.Buffer || require("buffer").Buffer;
+
 export const TextInput = (props) => {
     const {
         isRequired,
@@ -71,7 +74,8 @@ export const FileInput = (props) => {
             'type'             : file.type
          };  
          
-        dispatch(getFileUrls({fileName, inputName})).then(res => dispatch(putFile({res, fileObject })))
+        dispatch(getFileUrls(file))
+        // .then(res => dispatch(putFile({res, fileObject })))
 
     }
     const addFile = (event) => {
