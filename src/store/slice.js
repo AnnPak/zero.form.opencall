@@ -1,30 +1,43 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { API_URL } from "../utils/constants";
 import { request } from "../utils/request";
-import S3 from 'react-aws-s3';
 
 const initialState = {
   files: {},
 };
 
-const config = {
-  bucketName: process.env.REACT_APP_BUCKET_NAME,
-  region: process.env.REACT_APP_REGION,
-  accessKeyId: process.env.REACT_APP_ACCESS,
-  secretAccessKey: process.env.REACT_APP_SECRET,
-}
-
 export const getFileUrls = createAsyncThunk(
   "form/getFileUrls",
   async (file) => {
-    const ReactS3Client = new S3(config);
-    // the name of the file uploaded is used to upload it to S3
-    ReactS3Client
-    .uploadFile(file, file.name)
-    .then(data => console.log(data.location))
-    .catch(err => console.error(err))
+      const response = await request(
+          `${API_URL}/platform-api/v1/submission-proxy/pre-signed-url/?filename=${file.name}`,
+          null,
+          "GET"
+      )
+
+      return await fetch(response.pre_signed_url, {
+        method: "PUT",
+        body: file["file"],
+      }).then(res => console.log(res));
+  
   }
 );
+
+// export const putFile = createAsyncThunk(
+//   "form/putFile",
+//   async ({ res, fileObject }) => {
+//     // console.log(fileObject)
+
+//     console.log(JSON.stringify(fileObject))
+
+//     const result = await fetch(res.payload.pre_signed_url, {
+//       method: "PUT",
+//       body: fileObject,
+//     });
+
+//     console.log(result)
+//   }
+// );
 
 // export const getFileUrls2 = createAsyncThunk(
 //   "form/getFileUrls",
@@ -47,15 +60,7 @@ export const getFileUrls = createAsyncThunk(
 //   }
 // );
 
-export const putFile = createAsyncThunk(
-  "form/putFile",
-  async ({ res, fileObject }) => {
-    // console.log(fileObject)
 
-    console.log(JSON.stringify(fileObject))
-    return await request(res.payload.pre_signed_url, JSON.stringify(fileObject), "PUT");
-  }
-);
 
 const formSlice = createSlice({
   name: "RootReducer",
@@ -77,13 +82,13 @@ const formSlice = createSlice({
       .addCase(getFileUrls.rejected, (state, action) => {
         console.log(action);
       })
-      .addCase(putFile.fulfilled, (state, action) => {
-        console.log(action);
-      })
+      // .addCase(putFile.fulfilled, (state, action) => {
+      //   console.log(action);
+      // })
 
-      .addCase(putFile.rejected, (state, action) => {
-        console.log(action);
-      });
+      // .addCase(putFile.rejected, (state, action) => {
+      //   console.log(action);
+      // });
   },
 });
 
