@@ -16,7 +16,7 @@ const FormContainer = () => {
   const [formType, setFormType] = useState(null);
   const [formValue, setFormValue] = useState({});
   const { userKey } = useParams();
-  const files = useSelector(store => store.RootReducer);
+  const {files} = useSelector(store => store.RootReducer);
 
   const [validated, setValidated] = useState(false);
 
@@ -39,6 +39,7 @@ const FormContainer = () => {
 
 // Добавляем данные файлов в formValue
   useEffect(() => {
+    console.log(files)
     setFormValue((formValuePrev) => ({ ...formValuePrev, ...files }));
   }, [files]);
 
