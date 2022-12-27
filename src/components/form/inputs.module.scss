@@ -154,3 +154,22 @@
     line-height: 14px;
     margin-top: 8px;
 }
+
+.uploadBtn button{
+    min-width: 78px;
+}
+
+.errorBtn .btn{
+    background: #680b0b;
+}
+
+.successBtn button{
+    position: relative;
+}
+
+.successBtn button::after{
+   content: url(../../assets/img/done.svg);
+   position: absolute;
+   right: -25px;
+}
+

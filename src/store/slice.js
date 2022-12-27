@@ -4,66 +4,92 @@ import { request } from "../utils/request";
 
 const initialState = {
   files: {},
+  uploadStatus: {}
 };
 
-export const getFileUrls = createAsyncThunk(
+export const putFile = createAsyncThunk(
   "form/getFileUrls",
-  async ({ fileName, inputName }) => {
-    if (fileName) {
+  async ({file, inputName}) => {
       const response = await request(
-        `${API_URL}/platform-api/v1/submission-proxy/pre-signed-url/?filename=${fileName}`,
-        null,
-        "GET"
-      );
+          `${API_URL}/platform-api/v1/submission-proxy/pre-signed-url/?filename=${file.name}`,
+          null,
+          "GET"
+      )
+      
+    
+      await fetch(response.pre_signed_url, {
+        method: "PUT",
+        body: file,
+      }).then(res=> console.log(res));
 
       return {
         pre_signed_url: response.pre_signed_url,
         file_future_url: response.file_future_url,
         filedType: inputName,
       };
-    } else {
-      throw new Error(`This file is undefined`);
-    }
-  }
-);
-
-export const putFile = createAsyncThunk(
-  "form/putFile",
-  async ({ res, file }) => {
-    return await request(res.payload.pre_signed_url, JSON.stringify({file: file}), "PUT");
+  
   }
 );
 
 const formSlice = createSlice({
   name: "RootReducer",
   initialState,
-  reducers: {},
+  reducers: {
+    changeUploadStatus: (state, action) => {
+      state.uploadStatus = state.uploadStatus
+      ? {
+          ...state.uploadStatus,
+          [action.payload]: 'idle',
+        }
+      : { [action.payload]: 'idle' };
+    },
+  },
   extraReducers: (builder) => {
     builder
-      .addCase(getFileUrls.fulfilled, (state, action) => {
+      .addCase(putFile.pending, (state, action) => {
+        const inputName = action.meta.arg.inputName;
+        state.uploadStatus = state.uploadStatus
+        ? {
+            ...state.uploadStatus,
+            [inputName]: 'loading',
+          }
+        : { [inputName]: 'loading' };
+      })
+      .addCase(putFile.fulfilled, (state, action) => {
         const { file_future_url, filedType } = action.payload;
+        
         state.files = state.files
           ? {
               ...state.files,
               [filedType]: file_future_url,
             }
           : { [filedType]: file_future_url };
-        console.log(action);
-      })
 
-      .addCase(getFileUrls.rejected, (state, action) => {
-        console.log(action);
-      })
-      .addCase(putFile.fulfilled, (state, action) => {
-        console.log(action);
+          state.uploadStatus = state.uploadStatus
+          ? {
+              ...state.uploadStatus,
+              [filedType]: 'success',
+            }
+          : { [filedType]: 'success' }
+        
       })
 
       .addCase(putFile.rejected, (state, action) => {
-        console.log(action);
-      });
+        const { filedType } = action.payload;
+        state.uploadStatus = state.uploadStatus
+        ? {
+            ...state.uploadStatus,
+            [filedType]: 'error',
+          }
+        : { [filedType]: 'error' };
+
+      })
+
   },
 });
 
-const { reducer } = formSlice;
+const { actions, reducer } = formSlice;
+
+export const {changeUploadStatus} = actions
 
 export default reducer;
