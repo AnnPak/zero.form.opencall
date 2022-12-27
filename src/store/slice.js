@@ -34,7 +34,16 @@ export const putFile = createAsyncThunk(
 const formSlice = createSlice({
   name: "RootReducer",
   initialState,
-  reducers: {},
+  reducers: {
+    changeUploadStatus: (state, action) => {
+      state.uploadStatus = state.uploadStatus
+      ? {
+          ...state.uploadStatus,
+          [action.payload]: 'idle',
+        }
+      : { [action.payload]: 'idle' };
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(putFile.pending, (state, action) => {
@@ -45,10 +54,10 @@ const formSlice = createSlice({
             [inputName]: 'loading',
           }
         : { [inputName]: 'loading' };
-
       })
       .addCase(putFile.fulfilled, (state, action) => {
         const { file_future_url, filedType } = action.payload;
+        
         state.files = state.files
           ? {
               ...state.files,
@@ -61,18 +70,8 @@ const formSlice = createSlice({
               ...state.uploadStatus,
               [filedType]: 'success',
             }
-          : { [filedType]: 'success' };
-
-          const timeOut = setTimeout(() => {
-            state.uploadStatus = state.uploadStatus
-            ? {
-                ...state.uploadStatus,
-                [filedType]: 'idle',
-              }
-            : { [filedType]: 'idle' };
-          }, 5000)
-
-          clearTimeout(timeOut);
+          : { [filedType]: 'success' }
+        
       })
 
       .addCase(putFile.rejected, (state, action) => {
@@ -84,21 +83,13 @@ const formSlice = createSlice({
           }
         : { [filedType]: 'error' };
 
-        const timeOut = setTimeout(() => {
-          state.uploadStatus = state.uploadStatus
-          ? {
-              ...state.uploadStatus,
-              [filedType]: 'idle',
-            }
-          : { [filedType]: 'idle' };
-        }, 5000)
-        
-        clearTimeout(timeOut);
       })
 
   },
 });
 
-const { reducer } = formSlice;
+const { actions, reducer } = formSlice;
+
+export const {changeUploadStatus} = actions
 
 export default reducer;

@@ -3,7 +3,7 @@ import classnames from "classnames";
 import { Form, Button } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getFileUrls, putFile } from "../../store/slice";
+import { changeUploadStatus, getFileUrls, putFile } from "../../store/slice";
 import BtnPreloader from "../preloaders/preloader-btn";
 
 window.Buffer = window.Buffer || require("buffer").Buffer;
@@ -80,24 +80,36 @@ export const FileInput = (props) => {
   };
 
   useEffect(() => {
-    
-    console.log(uploadStatus?.[inputName])
-    if(uploadStatus?.[inputName]){
-        switch (uploadStatus[inputName]) {
-            case "loading":
-                setBtnName(<BtnPreloader />);
-                break;
-            case "error":
-                setBtnName("Ошибка");
-            break;
-            default:
-                setBtnName("Upload");
-                break;
-        }
-    }
-    
+    if (uploadStatus?.[inputName]) {
+      let timeOut;
+      switch (uploadStatus[inputName]) {
+        case "loading":
+          setBtnName(<BtnPreloader />);
+          break;
+        case "error":
+          setBtnName("Error");
 
-  }, [uploadStatus, inputName]);
+          timeOut = setTimeout(() => {
+            dispatch(changeUploadStatus(inputName));
+          }, 5000);
+          break;
+        case "success":
+          setBtnName("Done");
+
+          timeOut = setTimeout(() => {
+            dispatch(changeUploadStatus(inputName));
+          }, 5000);
+          break;
+        default:
+          setBtnName("Upload");
+          break;
+      }
+
+      return () => {
+        clearTimeout(timeOut);
+      };
+    }
+  }, [uploadStatus, inputName, dispatch]);
 
   return (
     <Form
@@ -117,10 +129,17 @@ export const FileInput = (props) => {
             required={true}
             onChange={addFile}
           />
-          <Button type="submit" variant="dark">
-            
-            {btnName}
-          </Button>
+          <div
+            className={classnames(
+              btnName === "Error" && styles.errorBtn,
+              btnName === "Done" && styles.successBtn,
+              styles.uploadBtn
+            )}
+          >
+            <Button type="submit" variant="dark">
+              {btnName}
+            </Button>
+          </div>
         </div>
       </Form.Group>
 
