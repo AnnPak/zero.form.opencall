@@ -3,7 +3,13 @@ import classnames from "classnames";
 import { Form, Button } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { changeUploadStatus, getFileUrls, putFile } from "../../store/slice";
+import {
+  changeUploadStatus,
+  clearFileState,
+  getFileUrls,
+  putFile,
+  setErrorFiled,
+} from "../../store/slice";
 import BtnPreloader from "../preloaders/preloader-btn";
 
 window.Buffer = window.Buffer || require("buffer").Buffer;
@@ -49,7 +55,7 @@ export const TextInput = (props) => {
         onChange={(e) => handleForm(inputName, e.target.value)}
       />
       <Form.Control.Feedback type="invalid" className={styles.invalidFeedback}>
-        {invalidFeedback}
+        {invalidFeedback ? invalidFeedback : "This is a required field"}
       </Form.Control.Feedback>
 
       {description && (
@@ -63,8 +69,10 @@ export const TextInput = (props) => {
 };
 
 export const FileInput = (props) => {
-  const { title, subtitle, inputName, description } = props;
-  const { uploadStatus } = useSelector((store) => store.RootReducer);
+  const { title, subtitle, inputName, description, invalidFeedback } = props;
+  const { uploadStatus, errorFileds } = useSelector(
+    (store) => store.RootReducer
+  );
   const [file, setFile] = useState(null);
 
   const [btnName, setBtnName] = useState("Upload");
@@ -76,40 +84,37 @@ export const FileInput = (props) => {
     dispatch(putFile({ file, inputName }));
   };
   const addFile = (event) => {
+
+    dispatch(setErrorFiled({fieldName: inputName, isEmpty: false}))
+    dispatch(clearFileState(inputName)); //очищаю данные файла если они были
+    dispatch(changeUploadStatus({ inputName, status: 'idle' })); //меняю статус файла на idle
+
     setFile(event.target.files[0]);
   };
 
   useEffect(() => {
     if (uploadStatus?.[inputName]) {
-      let timeOut;
+      // let timeOut;
       switch (uploadStatus[inputName]) {
         case "loading":
           setBtnName(<BtnPreloader />);
           break;
         case "error":
           setBtnName("Error");
-
-          timeOut = setTimeout(() => {
-            dispatch(changeUploadStatus(inputName));
-          }, 5000);
           break;
         case "success":
           setBtnName("Done");
-
-          timeOut = setTimeout(() => {
-            dispatch(changeUploadStatus(inputName));
-          }, 5000);
           break;
         default:
           setBtnName("Upload");
           break;
       }
-
-      return () => {
-        clearTimeout(timeOut);
-      };
     }
   }, [uploadStatus, inputName, dispatch]);
+
+  useEffect(() => {
+    console.log(errorFileds?.[inputName]);
+  }, [errorFileds])
 
   return (
     <Form
@@ -119,7 +124,12 @@ export const FileInput = (props) => {
       <Form.Group>
         <p className={styles.inputTitle}>{title}</p>
         <p className={styles.inputSubtitle}>{subtitle}.</p>
-        <div className={styles.uploadGroup}>
+        <div
+          className={classnames(
+            styles.uploadGroup,
+            errorFileds?.[inputName] && styles.uploadGroupError
+          )}
+        >
           <Form.Control
             className={styles.fileUploadInput}
             name={inputName}
@@ -142,6 +152,13 @@ export const FileInput = (props) => {
           </div>
         </div>
       </Form.Group>
+      {errorFileds?.[inputName] && (
+        <>
+          <Form.Text className={styles.invalidFeedback}>
+            {invalidFeedback ? invalidFeedback : "This is a required field"}
+          </Form.Text>
+        </>
+      )}
 
       {description && (
         <Form.Text
