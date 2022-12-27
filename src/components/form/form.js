@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useSearchParams, useNavigate } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
-import { SuccessResponse, ErrorResponse } from "../responses/responses";
 import classnames from "classnames";
 
 import { TextInput, FileInput } from "./inputs";
@@ -9,14 +8,14 @@ import { data } from "../../utils/fakeapi";
 
 import styles from "./form.module.scss";
 import styleInputs from "./inputs.module.scss";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setErrorFiled } from "../../store/slice";
 
 const FormContainer = () => {
   const [formData, setFormData] = useState(null);
-  const [formType, setFormType] = useState(null);
   const [formValue, setFormValue] = useState({});
   const { userKey } = useParams();
-  const {files} = useSelector(store => store.RootReducer);
+  const { files } = useSelector((store) => store.RootReducer);
 
   const [validated, setValidated] = useState(false);
 
@@ -24,51 +23,61 @@ const FormContainer = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const navigate = useNavigate();
-
-// По get параметру определяем тип формы
+  const dispatch = useDispatch();
+  // По get параметру определяем тип формы
   useEffect(() => {
     const formParam = searchParams.get("form_type");
 
     if (formParam !== "highPoly" && formParam !== "lowPoly") {
       return navigate("/error");
     }
-    formParam === "highPoly" && setFormData(data.filter((form) => form.type === "high-poly"));
-    formParam === "lowPoly" && setFormData(data.filter((form) => form.type === "low-poly"));
+    formParam === "highPoly" &&
+      setFormData(data.filter((form) => form.type === "high-poly"));
+    formParam === "lowPoly" &&
+      setFormData(data.filter((form) => form.type === "low-poly"));
+
     // eslint-disable-next-line
   }, [searchParams]);
 
-// Добавляем данные файлов в formValue
+  // Добавляем данные файлов в formValue
   useEffect(() => {
-    console.log(files)
     setFormValue((formValuePrev) => ({ ...formValuePrev, ...files }));
   }, [files]);
-
-//   useEffect(() => {
-//     formType && setFormData(data.filter((form) => form.type === formType));
-//   }, [formType]);
 
   useEffect(() => {
     formData &&
       formData[0].fields.map((element) => {
         const value = { [element.field_name]: "" };
-        return setFormValue((formValuePrev) => ({ ...formValuePrev, ...value }));
+        
+        return setFormValue((formValuePrev) => ({
+          ...formValuePrev,
+          ...value,
+        }));
       });
   }, [formData]);
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
+    const isEmptyFileds = Object.values(formValue).some((item) => item === ""); //есть ои пустые поля
 
-    if (form.checkValidity() === false) {
+    if (form.checkValidity() === false || isEmptyFileds) {
       event.preventDefault();
       event.stopPropagation();
+      
+      if(isEmptyFileds){
+        const emptyValue = Object.keys(formValue)
+            .filter(key => formValue[key] === ''); //отбираю ключи, у которых значения пустые
+
+        emptyValue.forEach((fieldName) => {
+          dispatch(setErrorFiled({fieldName, isEmpty: true})); //если пустые поля есть, добавить true
+        })
+      }
+      
+    }else{
+      event.target.reset(); //очищаю форму
     }
 
-    const result = Object.values(formValue).some((item) => item === "");
-
     alert(JSON.stringify(formValue));
-    alert("Пустое значние: " + result);
-    event.target.reset();
-
     setValidated(true);
   };
 
@@ -83,7 +92,7 @@ const FormContainer = () => {
   return (
     <>
       {formData && (
-        <section>
+        <section className={styles.uploadGarment}>
           <div className={styles.formHeader}>
             <p className={styles.title}>{formData[0].display_title}</p>
             <p
@@ -128,7 +137,8 @@ const FormContainer = () => {
             <div
               className={classnames(
                 styleInputs.inputWrapper,
-                styleInputs.inputWrapperLast
+                styleInputs.inputWrapperLast,
+                styleInputs.submitBtnWrapper,
               )}
             >
               <Button
@@ -140,24 +150,24 @@ const FormContainer = () => {
               </Button>
             </div>
           </Form>
-          <FileInput
-            key="3ditem"
-            title="ZPRJ file (3D Item) link"
-            subtitle="ZPRJ file"
-            inputName="3ditem"
-            description={createHtml(
-              "<p>Garment project made in CLO or Marvelous</p>"
-            )}
-          />
-          <FileInput
-            key="3ditem2"
-            title="ZPRJ file (3D Item2) link 2"
-            subtitle="ZPRJ file2"
-            inputName="3ditem2"
-            description={createHtml(
-              "<p>Garment project made in CLO or Marvelous</p>"
-            )}
-          />
+
+          {formData[0].fields.map((element) => {
+              if (element.field_type === "file") {
+                return (
+                  <FileInput
+                    key={element.field_name}
+                    title={element.display_title}
+                    subtitle={element.display_subtitle}
+                    inputName={element.field_name}
+                    description={createHtml(element.display_description)}
+                    invalidFeedback={element.invalid_feedback}
+                  />
+                );
+              }
+          })
+          }
+
+        
         </section>
       )}
     </>
