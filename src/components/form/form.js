@@ -70,7 +70,8 @@ const FormContainer = () => {
 
     if (form.checkValidity() === false || isEmptyFileds) {
       event.stopPropagation();
-
+      
+      setIsLoading(false);
       if (isEmptyFileds) {
         const emptyValue = Object.keys(formValue).filter(
           (key) => formValue[key] === ""
