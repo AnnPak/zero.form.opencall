@@ -9,11 +9,13 @@ import { data } from "../../utils/fakeapi";
 import styles from "./form.module.scss";
 import styleInputs from "./inputs.module.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { setErrorFiled } from "../../store/slice";
+import { setErrorFiled, submitForm } from "../../store/slice";
+import Preloader from "../preloaders/preloader";
 
 const FormContainer = () => {
   const [formData, setFormData] = useState(null);
   const [formValue, setFormValue] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
   const { userKey } = useParams();
   const { files } = useSelector((store) => store.RootReducer);
 
@@ -47,8 +49,10 @@ const FormContainer = () => {
   useEffect(() => {
     formData &&
       formData[0].fields.map((element) => {
-        const value = { [element.field_name]: "" };
-        
+        const value = {
+          [element.field_name]: element.value ? element.value : "",
+        };
+
         return setFormValue((formValuePrev) => ({
           ...formValuePrev,
           ...value,
@@ -57,28 +61,44 @@ const FormContainer = () => {
   }, [formData]);
 
   const handleSubmit = (event) => {
+    event.preventDefault();
+    setValidated(true);
+    setIsLoading(true);
+
     const form = event.currentTarget;
     const isEmptyFileds = Object.values(formValue).some((item) => item === ""); //есть ои пустые поля
 
     if (form.checkValidity() === false || isEmptyFileds) {
-      event.preventDefault();
       event.stopPropagation();
-      
-      if(isEmptyFileds){
-        const emptyValue = Object.keys(formValue)
-            .filter(key => formValue[key] === ''); //отбираю ключи, у которых значения пустые
+
+      if (isEmptyFileds) {
+        const emptyValue = Object.keys(formValue).filter(
+          (key) => formValue[key] === ""
+        ); //отбираю ключи, у которых значения пустые
 
         emptyValue.forEach((fieldName) => {
-          dispatch(setErrorFiled({fieldName, isEmpty: true})); //если пустые поля есть, добавить true
-        })
+          dispatch(setErrorFiled({ fieldName, isEmpty: true })); //если пустые поля есть, добавить true
+        });
       }
-      
-    }else{
-      event.target.reset(); //очищаю форму
+    } else {
+      dispatch(submitForm(JSON.stringify({ record: formValue })))
+        .then((data) => {
+          if (data?.error) {
+            navigate("/failed-submit", {
+              state: { userKey: userKey, prevPath: window.location.href },
+            });
+          } else {
+            navigate("/success-submit", {
+              state: { userKey: userKey },
+            });
+          }
+        })
+        .catch(() => {
+          navigate("/failed-submit", {
+            state: { userKey: userKey, prevPath: window.location.pathname },
+          });
+        });
     }
-
-    alert(JSON.stringify(formValue));
-    setValidated(true);
   };
 
   const handleForm = (name, value) => {
@@ -91,7 +111,12 @@ const FormContainer = () => {
 
   return (
     <>
-      {formData && (
+      {(isLoading || !formData) && (
+        <>
+          <Preloader />
+        </>
+      )}
+      {formData && !isLoading && (
         <section className={styles.uploadGarment}>
           <div className={styles.formHeader}>
             <p className={styles.title}>{formData[0].display_title}</p>
@@ -138,7 +163,7 @@ const FormContainer = () => {
               className={classnames(
                 styleInputs.inputWrapper,
                 styleInputs.inputWrapperLast,
-                styleInputs.submitBtnWrapper,
+                styleInputs.submitBtnWrapper
               )}
             >
               <Button
@@ -152,22 +177,21 @@ const FormContainer = () => {
           </Form>
 
           {formData[0].fields.map((element) => {
-              if (element.field_type === "file") {
-                return (
-                  <FileInput
-                    key={element.field_name}
-                    title={element.display_title}
-                    subtitle={element.display_subtitle}
-                    inputName={element.field_name}
-                    description={createHtml(element.display_description)}
-                    invalidFeedback={element.invalid_feedback}
-                  />
-                );
-              }
-          })
-          }
-
-        
+            if (element.field_type === "file") {
+              return (
+                <FileInput
+                  key={element.field_name}
+                  title={element.display_title}
+                  subtitle={element.display_subtitle}
+                  inputName={element.field_name}
+                  description={createHtml(element.display_description)}
+                  invalidFeedback={element.invalid_feedback}
+                />
+              );
+            } else {
+              return null;
+            }
+          })}
         </section>
       )}
     </>

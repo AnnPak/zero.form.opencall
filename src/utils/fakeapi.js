@@ -27,25 +27,25 @@ export const data = [
 
             },
 
-            {
-                "field_name":"3ditem",
-                "field_type": "file",
-                "display_title": "ZPRJ file (3D Item) link",
-                "display_subtitle": "ZPRJ file",
-                "display_description": "<p>Garment project made in CLO or Marvelous</p>",
-                "required": true,
-                "invalid_feedback": 'Add the ZPrj file'
-            },
+            // {
+            //     "field_name":"3ditem",
+            //     "field_type": "file",
+            //     "display_title": "ZPRJ file (3D Item) link",
+            //     "display_subtitle": "ZPRJ file",
+            //     "display_description": "<p>Garment project made in CLO or Marvelous</p>",
+            //     "required": true,
+            //     "invalid_feedback": 'Add the ZPrj file'
+            // },
 
-            {
-                "field_name":"3ditem2",
-                "field_type": "file",
-                "display_title": "ZPRJ2 file (3D Item) link",
-                "display_subtitle": "ZPRJ2 file",
-                "display_description": "<p>Garment project made in CLO or Marvelous</p>",
-                "required": true,
-                "invalid_feedback": 'Add the ZPrj file'
-            },
+            // {
+            //     "field_name":"3ditem2",
+            //     "field_type": "file",
+            //     "display_title": "ZPRJ2 file (3D Item) link",
+            //     "display_subtitle": "ZPRJ2 file",
+            //     "display_description": "<p>Garment project made in CLO or Marvelous</p>",
+            //     "required": true,
+            //     "invalid_feedback": 'Add the ZPrj file'
+            // },
             {
                 "field_type": "hidden",
                 "field_name": "Submission type",

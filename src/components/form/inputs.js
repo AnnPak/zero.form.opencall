@@ -30,6 +30,8 @@ export const TextInput = (props) => {
     invalidFeedback,
   } = props;
 
+  const { errorFileds } = useSelector((store) => store.RootReducer);
+  
   return (
     <Form.Group
       className={classnames(
@@ -54,9 +56,13 @@ export const TextInput = (props) => {
         error={error}
         onChange={(e) => handleForm(inputName, e.target.value)}
       />
-      <Form.Control.Feedback type="invalid" className={styles.invalidFeedback}>
-        {invalidFeedback ? invalidFeedback : "This is a required field"}
-      </Form.Control.Feedback>
+      {errorFileds?.[inputName] && (
+        <>
+          <Form.Text className={styles.invalidFeedback}>
+            {invalidFeedback ? invalidFeedback : "This is a required field"}
+          </Form.Text>
+        </>
+      )}
 
       {description && (
         <Form.Text
@@ -84,10 +90,9 @@ export const FileInput = (props) => {
     dispatch(putFile({ file, inputName }));
   };
   const addFile = (event) => {
-
-    dispatch(setErrorFiled({fieldName: inputName, isEmpty: false}))
+    dispatch(setErrorFiled({ fieldName: inputName, isEmpty: false }));
     dispatch(clearFileState(inputName)); //очищаю данные файла если они были
-    dispatch(changeUploadStatus({ inputName, status: 'idle' })); //меняю статус файла на idle
+    dispatch(changeUploadStatus({ inputName, status: "idle" })); //меняю статус файла на idle
 
     setFile(event.target.files[0]);
   };
@@ -111,10 +116,6 @@ export const FileInput = (props) => {
       }
     }
   }, [uploadStatus, inputName, dispatch]);
-
-  useEffect(() => {
-    console.log(errorFileds?.[inputName]);
-  }, [errorFileds])
 
   return (
     <Form
