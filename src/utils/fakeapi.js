@@ -24,9 +24,7 @@ export const data = [
                 "display_description": "<p>Good description: \"This item is inspired by my grandmother's collection of antique rugs and the sunny spring days spent in her garden.\" <br><br>Bad description: \"short jacket\".</p>",
                 "required": true,
                 "invalid_feedback": 'Enter a description of the item'
-
             },
-
             {
                 "field_name":"3ditem",
                 "field_type": "file",
@@ -36,7 +34,6 @@ export const data = [
                 "required": true,
                 "invalid_feedback": 'Add the ZPrj file'
             },
-
             {
                 "field_name":"3ditem2",
                 "field_type": "file",

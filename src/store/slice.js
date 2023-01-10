@@ -6,6 +6,10 @@ const initialState = {
   files: {},
   uploadStatus: {},
   errorFileds: {},
+
+  formSending: false,
+  formSuccess: false,
+  formError: false,
 };
 
 export const putFile = createAsyncThunk(
@@ -29,6 +33,17 @@ export const putFile = createAsyncThunk(
     };
   }
 );
+
+export const submitForm = createAsyncThunk(
+  "form/submitForm",
+  async (record) => {
+    return await request(
+      `${API_URL}/platform-api/v1/submission-proxy/`,
+      record,
+      "POST"
+    );
+  }
+)
 
 const formSlice = createSlice({
   name: "RootReducer",
@@ -96,7 +111,25 @@ const formSlice = createSlice({
           ...state?.errorFileds,
           [filedType]: true,
         };
-      });
+      })
+
+      .addCase(submitForm.pending, (state) => {
+        state.formSending = true;
+        state.formSuccess = false;
+        state.formError = false;
+      })
+      .addCase(submitForm.fulfilled, (state, action) => {
+        console.log(action)
+        state.formSending = false;
+        state.formSuccess = true;
+        state.formError = false;
+      })
+
+      .addCase(submitForm.rejected, (state) => {
+        state.formSending = false;
+        state.formSuccess = false;
+        state.formError = true;
+      })
   },
 });
 
