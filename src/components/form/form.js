@@ -14,7 +14,7 @@ import Preloader from "../preloaders/preloader";
 
 const FormContainer = () => {
   const [formData, setFormData] = useState(null);
-  const [formValue, setFormValue] = useState({});
+  const [formValue, setFormValue] = useState({});//массив значений полей формы и полей upload
   const [isLoading, setIsLoading] = useState(false);
   const { userKey } = useParams();
   const { files } = useSelector((store) => store.RootReducer);
@@ -26,6 +26,7 @@ const FormContainer = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   // По get параметру определяем тип формы
   useEffect(() => {
     const formParam = searchParams.get("form_type");
@@ -46,6 +47,7 @@ const FormContainer = () => {
     setFormValue((formValuePrev) => ({ ...formValuePrev, ...files }));
   }, [files]);
 
+  // при изменении formData обновляем formValue
   useEffect(() => {
     formData &&
       formData[0].fields.map((element) => {
@@ -66,7 +68,8 @@ const FormContainer = () => {
     setIsLoading(true);
 
     const form = event.currentTarget;
-    const isEmptyFileds = Object.values(formValue).some((item) => item === ""); //есть ои пустые поля
+    //проверяем есть ои пустые поля в форме и вне ее
+    const isEmptyFileds = Object.values(formValue).some((item) => item === ""); 
 
     if (form.checkValidity() === false || isEmptyFileds) {
       event.stopPropagation();
@@ -85,7 +88,8 @@ const FormContainer = () => {
         });
       }
     } else {
-      dispatch(submitForm(JSON.stringify({ record: formValue })))
+      console.log(JSON.stringify({fields: formValue}));
+      dispatch(submitForm(JSON.stringify({ fields: formValue })))
         .then((data) => {
           if (data?.error) {
             navigate("/failed-submit", {

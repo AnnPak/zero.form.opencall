@@ -10,6 +10,7 @@ import {
   setErrorFiled,
 } from "../../store/slice";
 import BtnPreloader from "../preloaders/preloader-btn";
+import trash from "../../assets/img/trash.svg";
 
 window.Buffer = window.Buffer || require("buffer").Buffer;
 
@@ -80,14 +81,13 @@ export const FileInput = (props) => {
   );
   const [file, setFile] = useState(null);
 
-  const [btnName, setBtnName] = useState("Upload");
-
   const dispatch = useDispatch();
 
   const uploadFile = (e) => {
     e.preventDefault();
     dispatch(putFile({ file, inputName }));
   };
+
   const addFile = (event) => {
     dispatch(setErrorFiled({ fieldName: inputName, isEmpty: false }));
     dispatch(clearFileState(inputName)); //очищаю данные файла если они были
@@ -96,29 +96,17 @@ export const FileInput = (props) => {
     setFile(event.target.files[0]);
   };
 
-  useEffect(() => {
-    if (uploadStatus?.[inputName]) {
-      // let timeOut;
-      switch (uploadStatus[inputName]) {
-        case "loading":
-          setBtnName(<BtnPreloader />);
-          break;
-        case "error":
-          setBtnName("Error");
-          break;
-        case "success":
-          setBtnName("Done");
-          break;
-        default:
-          setBtnName("Upload");
-          break;
-      }
-    }
-  }, [uploadStatus, inputName, dispatch]);
+  const RemoveFile = () => {
+    document.getElementById(inputName).reset();
+    dispatch(clearFileState(inputName)); //очищаю данные файла если они были
+    dispatch(changeUploadStatus({ inputName, status: "idle" })); //меняю статус файла на idle
+    setFile(null);
+  }
 
   return (
     <Form
       onSubmit={(e) => uploadFile(e, inputName)}
+      id={inputName}
       className={classnames(styles.inputWrapper, styles.fileUpload)}
     >
       <Form.Group>
@@ -141,13 +129,30 @@ export const FileInput = (props) => {
           />
           <div
             className={classnames(
-              btnName === "Error" && styles.errorBtn,
-              btnName === "Done" && styles.successBtn,
+              uploadStatus[inputName] === "error" && styles.errorBtn,
+              uploadStatus[inputName] === "success" && styles.dNone,
               styles.uploadBtn
             )}
           >
             <Button type="submit" variant="dark">
-              {btnName}
+              {uploadStatus[inputName] === "error" && "Error"}
+              {uploadStatus[inputName] === "loading" && <BtnPreloader />}
+              {uploadStatus[inputName] !== "error" &&
+                uploadStatus[inputName] !== "loading" &&
+                "Upload"}
+            </Button>
+          </div>
+
+          <div
+            className={classnames(
+              uploadStatus[inputName] === "success" && styles.dBlock,
+              styles.trashBtn
+            )}>
+            <Button onClick={RemoveFile} variant="dark">
+              {
+                <img src={trash} alt="Remove file" />
+                
+              }
             </Button>
           </div>
         </div>

@@ -85,7 +85,11 @@ const formSlice = createSlice({
 
         state.files = {
           ...state?.files,
-          [filedType]: file_future_url,
+          [filedType]: [
+            {
+              'url': file_future_url,
+            }
+          ],
         };
 
         state.uploadStatus = {

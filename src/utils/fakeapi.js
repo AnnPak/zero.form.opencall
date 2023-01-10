@@ -5,7 +5,8 @@ export const data = [
         "display_description": "Submit your digital fashion piece here.\nDetailed requirements:\n<a href=\"https://platform.zero10.app\">https://platform.zero10.app</a>",
         "fields": [
             {
-                "field_name":"name",
+
+                "field_name":"Item name",
                 "field_type": "text",
                 "field_placeholder": 'Disappearing Pants',
                 "display_title": "Item name",
@@ -16,7 +17,7 @@ export const data = [
             },
 
             {
-                "field_name":"description",
+                "field_name":"Description",
                 "field_type": "textarea",
                 "field_placeholder": 'Add a description',
                 "display_title": "Describe the item",
@@ -26,7 +27,7 @@ export const data = [
                 "invalid_feedback": 'Enter a description of the item'
             },
             {
-                "field_name":"3ditem",
+                "field_name":"ZPRJ file (3D Item)",
                 "field_type": "file",
                 "display_title": "ZPRJ file (3D Item) link",
                 "display_subtitle": "ZPRJ file",
@@ -35,19 +36,10 @@ export const data = [
                 "invalid_feedback": 'Add the ZPrj file'
             },
             {
-                "field_name":"3ditem2",
-                "field_type": "file",
-                "display_title": "ZPRJ2 file (3D Item) link",
-                "display_subtitle": "ZPRJ2 file",
-                "display_description": "<p>Garment project made in CLO or Marvelous</p>",
-                "required": true,
-                "invalid_feedback": 'Add the ZPrj file'
-            },
-            {
                 "field_type": "hidden",
                 "field_name": "Submission type",
                 "required": true,
-                "value": "high-poly"
+                "value": "High-poly"
             }
         ]
         
