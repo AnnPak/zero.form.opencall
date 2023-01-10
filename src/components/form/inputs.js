@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   changeUploadStatus,
   clearFileState,
-  getFileUrls,
   putFile,
   setErrorFiled,
 } from "../../store/slice";
@@ -31,7 +30,7 @@ export const TextInput = (props) => {
   } = props;
 
   const { errorFileds } = useSelector((store) => store.RootReducer);
-  
+
   return (
     <Form.Group
       className={classnames(

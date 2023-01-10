@@ -70,15 +70,18 @@ const FormContainer = () => {
 
     if (form.checkValidity() === false || isEmptyFileds) {
       event.stopPropagation();
-      
+
       setIsLoading(false);
+
+      //отбираю ключи, у которых значения пустые
       if (isEmptyFileds) {
         const emptyValue = Object.keys(formValue).filter(
           (key) => formValue[key] === ""
-        ); //отбираю ключи, у которых значения пустые
+        ); 
 
         emptyValue.forEach((fieldName) => {
-          dispatch(setErrorFiled({ fieldName, isEmpty: true })); //если пустые поля есть, добавить true
+          //если пустые поля есть, добавить true
+          dispatch(setErrorFiled({ fieldName, isEmpty: true })); 
         });
       }
     } else {
