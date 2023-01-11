@@ -54,9 +54,9 @@ export const TextInput = (props) => {
         placeholder={inputPlaceholder}
         value={value}
         error={error}
-        onChange={(e) => handleForm(inputName, e.target.value)}
+        onChange={(e) => handleForm(title, e.target.value)}
       />
-      {errorFileds?.[inputName] && (
+      {errorFileds?.[title] && (
         <>
           <Form.Text className={styles.invalidFeedback}>
             {invalidFeedback ? invalidFeedback : "This is a required field"}
@@ -85,27 +85,27 @@ export const FileInput = (props) => {
 
   const uploadFile = (e) => {
     e.preventDefault();
-    dispatch(putFile({ file, inputName }));
+    dispatch(putFile({ file, fileName: title }));
   };
 
   const addFile = (event) => {
-    dispatch(setErrorFiled({ fieldName: inputName, isEmpty: false }));
-    dispatch(clearFileState(inputName)); //очищаю данные файла если они были
-    dispatch(changeUploadStatus({ inputName, status: "idle" })); //меняю статус файла на idle
+    dispatch(setErrorFiled({ fileName: title, isEmpty: false }));
+    dispatch(clearFileState(title)); //очищаю данные файла если они были
+    dispatch(changeUploadStatus({ fileName: title, status: "idle" })); //меняю статус файла на idle
 
     setFile(event.target.files[0]);
   };
 
   const RemoveFile = () => {
     document.getElementById(inputName).reset();
-    dispatch(clearFileState(inputName)); //очищаю данные файла если они были
-    dispatch(changeUploadStatus({ inputName, status: "idle" })); //меняю статус файла на idle
+    dispatch(clearFileState(title)); //очищаю данные файла если они были
+    dispatch(changeUploadStatus({ fileName: title, status: "idle" })); //меняю статус файла на idle
     setFile(null);
   }
 
   return (
     <Form
-      onSubmit={(e) => uploadFile(e, inputName)}
+      onSubmit={(e) => uploadFile(e)}
       id={inputName}
       className={classnames(styles.inputWrapper, styles.fileUpload)}
     >
@@ -115,7 +115,7 @@ export const FileInput = (props) => {
         <div
           className={classnames(
             styles.uploadGroup,
-            errorFileds?.[inputName] && styles.uploadGroupError
+            errorFileds?.[title] && styles.uploadGroupError
           )}
         >
           <Form.Control
@@ -129,23 +129,23 @@ export const FileInput = (props) => {
           />
           <div
             className={classnames(
-              uploadStatus[inputName] === "error" && styles.errorBtn,
-              uploadStatus[inputName] === "success" && styles.dNone,
+              uploadStatus[title] === "error" && styles.errorBtn,
+              uploadStatus[title] === "success" && styles.dNone,
               styles.uploadBtn
             )}
           >
             <Button type="submit" variant="dark">
-              {uploadStatus[inputName] === "error" && "Error"}
-              {uploadStatus[inputName] === "loading" && <BtnPreloader />}
-              {uploadStatus[inputName] !== "error" &&
-                uploadStatus[inputName] !== "loading" &&
+              {uploadStatus[title] === "error" && "Error"}
+              {uploadStatus[title] === "loading" && <BtnPreloader />}
+              {uploadStatus[title] !== "error" &&
+                uploadStatus[title] !== "loading" &&
                 "Upload"}
             </Button>
           </div>
 
           <div
             className={classnames(
-              uploadStatus[inputName] === "success" && styles.dBlock,
+              uploadStatus[title] === "success" && styles.dBlock,
               styles.trashBtn
             )}>
             <Button onClick={RemoveFile} variant="dark">
@@ -157,7 +157,7 @@ export const FileInput = (props) => {
           </div>
         </div>
       </Form.Group>
-      {errorFileds?.[inputName] && (
+      {errorFileds?.[title] && (
         <>
           <Form.Text className={styles.invalidFeedback}>
             {invalidFeedback ? invalidFeedback : "This is a required field"}

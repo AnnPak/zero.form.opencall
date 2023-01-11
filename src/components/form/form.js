@@ -45,6 +45,7 @@ const FormContainer = () => {
   // Добавляем данные файлов в formValue
   useEffect(() => {
     setFormValue((formValuePrev) => ({ ...formValuePrev, ...files }));
+    console.log(files)
   }, [files]);
 
   // при изменении formData обновляем formValue
@@ -52,7 +53,7 @@ const FormContainer = () => {
     formData &&
       formData[0].fields.map((element) => {
         const value = {
-          [element.field_name]: element.value ? element.value : "",
+          [element.display_title]: element.value ? element.value : "",
         };
 
         return setFormValue((formValuePrev) => ({
@@ -71,6 +72,7 @@ const FormContainer = () => {
     //проверяем есть ои пустые поля в форме и вне ее
     const isEmptyFileds = Object.values(formValue).some((item) => item === ""); 
 
+    alert(JSON.stringify({fields: formValue}));
     if (form.checkValidity() === false || isEmptyFileds) {
       event.stopPropagation();
 
@@ -84,11 +86,10 @@ const FormContainer = () => {
 
         emptyValue.forEach((fieldName) => {
           //если пустые поля есть, добавить true
-          dispatch(setErrorFiled({ fieldName, isEmpty: true })); 
+          dispatch(setErrorFiled({ fileName: fieldName, isEmpty: true })); 
         });
       }
     } else {
-      console.log(JSON.stringify({fields: formValue}));
       dispatch(submitForm(JSON.stringify({ fields: formValue })))
         .then((data) => {
           if (data?.error) {
@@ -184,7 +185,7 @@ const FormContainer = () => {
             </div>
           </Form>
 
-          {formData[0].fields.map((element) => {
+          {formData[0].fields.map((element, i) => {
             if (element.field_type === "file") {
               return (
                 <FileInput

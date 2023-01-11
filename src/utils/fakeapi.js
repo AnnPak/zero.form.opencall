@@ -5,8 +5,7 @@ export const data = [
         "display_description": "Submit your digital fashion piece here.\nDetailed requirements:\n<a href=\"https://platform.zero10.app\">https://platform.zero10.app</a>",
         "fields": [
             {
-
-                "field_name":"Item name",
+                "field_name":"name",
                 "field_type": "text",
                 "field_placeholder": 'Disappearing Pants',
                 "display_title": "Item name",
@@ -17,7 +16,7 @@ export const data = [
             },
 
             {
-                "field_name":"Description",
+                "field_name":"description",
                 "field_type": "textarea",
                 "field_placeholder": 'Add a description',
                 "display_title": "Describe the item",
@@ -27,7 +26,7 @@ export const data = [
                 "invalid_feedback": 'Enter a description of the item'
             },
             {
-                "field_name":"ZPRJ file (3D Item)",
+                "field_name":"ZPRJ",
                 "field_type": "file",
                 "display_title": "ZPRJ file (3D Item) link",
                 "display_subtitle": "ZPRJ file",
@@ -38,6 +37,7 @@ export const data = [
             {
                 "field_type": "hidden",
                 "field_name": "Submission type",
+                "display_title": "Submission type",
                 "required": true,
                 "value": "High-poly"
             }

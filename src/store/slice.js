@@ -14,7 +14,7 @@ const initialState = {
 
 export const putFile = createAsyncThunk(
   "form/getFileUrls",
-  async ({ file, inputName }) => {
+  async ({ file, fileName }) => {
     const response = await request(
       `${API_URL}/platform-api/v1/submission-proxy/pre-signed-url/?filename=${file.name}`,
       null,
@@ -29,7 +29,7 @@ export const putFile = createAsyncThunk(
     return {
       pre_signed_url: response.pre_signed_url,
       file_future_url: response.file_future_url,
-      filedType: inputName,
+      filedType: fileName,
     };
   }
 );
@@ -50,18 +50,18 @@ const formSlice = createSlice({
   initialState,
   reducers: {
     changeUploadStatus: (state, action) => {
-      const { inputName, status } = action.payload;
+      const { fileName, status } = action.payload;
       state.uploadStatus = {
         ...state?.uploadStatus,
-        [inputName]: status,
+        [fileName]: status,
       };
     },
     setErrorFiled: (state, action) => {
-      const { fieldName, isEmpty } = action.payload;
+      const { fileName, isEmpty } = action.payload;
       console.log(action.payload);
       state.errorFileds = {
         ...state?.errorFileds,
-        [fieldName]: isEmpty,
+        [fileName]: isEmpty,
       };
     },
     clearFileState: (state, action) => {
@@ -74,10 +74,11 @@ const formSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(putFile.pending, (state, action) => {
-        const inputName = action.meta.arg.inputName;
+        const fileName = action.meta.arg.fileName;
+
         state.uploadStatus = {
           ...state?.uploadStatus,
-          [inputName]: "loading",
+          [fileName]: "loading",
         };
       })
       .addCase(putFile.fulfilled, (state, action) => {
