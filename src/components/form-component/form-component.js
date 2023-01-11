@@ -69,12 +69,12 @@ const FormComponent = (props) => {
         if (element.field_type !== "file") {
           return (
             <TextInput
-              key={element.field_name}
+              key={`text-field-${i}`}
               isRequired={true}
               title={element.display_title}
               subtitle={element.display_subtitle}
               inputType={element.field_type}
-              inputName={element.field_name}
+              inputName={`text-field-${i}`}
               inputPlaceholder={element.field_placeholder}
               display={element.display}
               description={createHtml(element.display_description)}

@@ -139,10 +139,10 @@ const FormContainer = () => {
             if (element.field_type === "file") {
               return (
                 <UploadField
-                  key={element.field_name}
+                  key={`upload-field-${i}`}
                   title={element.display_title}
                   subtitle={element.display_subtitle}
-                  inputName={element.field_name}
+                  inputName={`upload-field-${i}`}
                   description={createHtml(element.display_description)}
                   invalidFeedback={element.invalid_feedback}
                 />
