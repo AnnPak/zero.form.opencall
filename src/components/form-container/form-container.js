@@ -142,6 +142,7 @@ const FormContainer = () => {
                   key={`upload-field-${i}`}
                   title={element.display_title}
                   subtitle={element.display_subtitle}
+                  isRequired={element.required}
                   inputName={`upload-field-${i}`}
                   description={createHtml(element.display_description)}
                   invalidFeedback={element.invalid_feedback}

@@ -25,11 +25,11 @@ export const data = [
             },
             {
                 "field_type": "file",
-                "display_title": "ZPRJ file (3D Item) link",
-                "display_subtitle": "ZPRJ file",
+                "display_title": "Hi-res preview",
+                "display_subtitle": "Hi-res preview file",
                 "display_description": "<p>Garment project made in CLO or Marvelous</p>",
                 "required": true,
-                "invalid_feedback": 'Add the ZPrj file'
+                "invalid_feedback": 'Add the Hi-res preview file'
             },
             {
                 "field_type": "hidden",

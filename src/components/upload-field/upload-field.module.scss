@@ -84,7 +84,7 @@
   margin: 0 auto;
 }
 
-.inputWrapper.required .inputTitle:after {
+.required .inputTitle:after {
   content: "*";
   position: absolute;
   color: #e35d6a;

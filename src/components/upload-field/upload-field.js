@@ -16,7 +16,7 @@ import trash from "../../assets/img/trash.svg";
 import styles from "./upload-field.module.scss";
 
 export const UploadField = (props) => {
-    const { title, subtitle, inputName, description, invalidFeedback } = props;
+    const { title, subtitle, inputName, description, invalidFeedback, isRequired } = props;
     const { uploadStatus, errorFileds } = useSelector(
       (store) => store.RootReducer
     );
@@ -53,7 +53,8 @@ export const UploadField = (props) => {
         id={inputName}
         className={classNames(styles.inputWrapper, styles.fileUpload)}
       >
-        <Form.Group>
+        <Form.Group
+          className={isRequired && styles.required}>
           <p className={styles.inputTitle}>{title}</p>
           <p className={styles.inputSubtitle}>{subtitle}.</p>
           <div
@@ -68,7 +69,7 @@ export const UploadField = (props) => {
               type="file"
               size="sm"
               variant="dark"
-              required={true}
+              required={isRequired}
               onChange={addFile}
             />
             <div

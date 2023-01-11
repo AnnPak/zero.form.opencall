@@ -70,7 +70,7 @@ const FormComponent = (props) => {
           return (
             <TextInput
               key={`text-field-${i}`}
-              isRequired={true}
+              isRequired={element.required}
               title={element.display_title}
               subtitle={element.display_subtitle}
               inputType={element.field_type}
