@@ -1,4 +1,4 @@
-import FormContainer from "../../components/form-container/form-container"
+import FormContainer from "../../components/form-wrapper/form-wrapper"
 
 const Home = () => {
   return(

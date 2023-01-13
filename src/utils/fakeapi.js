@@ -28,7 +28,7 @@ export const data = [
                 "display_title": "Hi-res preview",
                 "display_subtitle": "Hi-res preview file",
                 "display_description": "<p>Garment project made in CLO or Marvelous</p>",
-                "required": true,
+                "required": false,
                 "invalid_feedback": 'Add the Hi-res preview file'
             },
             {

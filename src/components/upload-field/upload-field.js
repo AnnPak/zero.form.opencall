@@ -54,7 +54,7 @@ export const UploadField = (props) => {
         className={classNames(styles.inputWrapper, styles.fileUpload)}
       >
         <Form.Group
-          className={isRequired && styles.required}>
+          className={isRequired ? styles.required : ''}>
           <p className={styles.inputTitle}>{title}</p>
           <p className={styles.inputSubtitle}>{subtitle}.</p>
           <div

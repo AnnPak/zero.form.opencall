@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,  } from "react";
 import { useParams, useSearchParams, useNavigate } from "react-router-dom";
 
 import { UploadField } from "../upload-field/upload-field";
@@ -19,7 +19,6 @@ const FormContainer = () => {
 
   // eslint-disable-next-line
   const [searchParams, setSearchParams] = useSearchParams();
-
   const navigate = useNavigate();
 
   // По get параметру определяем тип формы
@@ -56,53 +55,6 @@ const FormContainer = () => {
         }));
       });
   }, [formData]);
-
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   setValidated(true);
-  //   setIsLoading(true);
-
-  //   const form = event.currentTarget;
-  //   //проверяем есть ои пустые поля в форме и вне ее
-  //   const isEmptyFileds = Object.values(formValue).some((item) => item === "");
-
-  //   alert(JSON.stringify({ fields: formValue }));
-  //   if (form.checkValidity() === false || isEmptyFileds) {
-  //     event.stopPropagation();
-
-  //     setIsLoading(false);
-
-  //     //отбираю ключи, у которых значения пустые
-  //     if (isEmptyFileds) {
-  //       const emptyValue = Object.keys(formValue).filter(
-  //         (key) => formValue[key] === ""
-  //       );
-
-  //       emptyValue.forEach((fieldName) => {
-  //         //если пустые поля есть, добавить true
-  //         dispatch(setErrorFiled({ fileName: fieldName, isEmpty: true }));
-  //       });
-  //     }
-  //   } else {
-  //     dispatch(submitForm(JSON.stringify({ fields: formValue })))
-  //       .then((data) => {
-  //         if (data?.error) {
-  //           navigate("/failed-submit", {
-  //             state: { userKey: userKey, prevPath: window.location.href },
-  //           });
-  //         } else {
-  //           navigate("/success-submit", {
-  //             state: { userKey: userKey },
-  //           });
-  //         }
-  //       })
-  //       .catch(() => {
-  //         navigate("/failed-submit", {
-  //           state: { userKey: userKey, prevPath: window.location.pathname },
-  //         });
-  //       });
-  //   }
-  // };
 
   const handleForm = (name, value) => {
     setFormValue({ ...formValue, [name]: value });
