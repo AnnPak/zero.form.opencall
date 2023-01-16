@@ -22,45 +22,65 @@ const FormComponent = (props) => {
     setValidated(true);
     setIsLoading(true);
 
-    alert(JSON.stringify({ record: { fields: formValue } }));
-    const form = event.currentTarget;
+    const isEmptyFileds = Object.entries(formValue).some(([key, objects]) => {
+      if (
+        formData[0].fields.find(
+          (filed) => filed.display_title === key && filed.required === true
+        ) &&
+        objects === ""
+      ) {
+        return true;
+      }
+      return false;
+    });
 
-    //проверяем есть ои пустые поля в форме и вне ее
-    const isEmptyFileds = Object.values(formValue).some((item) => item === "");
-
-    if (form.checkValidity() === false || isEmptyFileds) {
+    if (isEmptyFileds) {
       event.stopPropagation();
       setIsLoading(false);
 
       //если пустые поля есть, выводим ошибку
       if (isEmptyFileds) {
-        const emptyValue = Object.keys(formValue).filter(
-          (key) => formValue[key] === ""
-        );
-
-        emptyValue.forEach((fieldName) => {
-          dispatch(setErrorFiled({ fileName: fieldName, isEmpty: true }));
-        });
+        showFieldError(formValue);
       }
     } else {
-      dispatch(submitForm(JSON.stringify({ record: { fields: formValue } })))
-        .then((data) => {
-          if (data?.error) {
-            navigate("/failed-submit", {
-              state: { userKey: userKey, prevPath: window.location.href },
-            });
-          } else {
-            navigate("/success-submit", {
-              state: { userKey: userKey },
-            });
-          }
-        })
-        .catch(() => {
-          navigate("/failed-submit", {
-            state: { userKey: userKey, prevPath: window.location.pathname },
-          });
-        });
+      submitFormRequest(formValue);
     }
+  };
+
+  const submitFormRequest = (formValue) => {
+    dispatch(submitForm(JSON.stringify({ record: { fields: formValue } })))
+      .then((data) => {
+        if (data?.error) {
+          navigate("/failed-submit", {
+            state: {
+              userKey: userKey,
+              prevPath: window.location.href,
+            },
+          });
+        } else {
+          navigate("/success-submit", {
+            state: { userKey: userKey },
+          });
+        }
+      })
+      .catch(() => {
+        navigate("/failed-submit", {
+          state: {
+            userKey: userKey,
+            prevPath: window.location.pathname,
+          },
+        });
+      });
+  };
+
+  const showFieldError = (formValue) => {
+    const emptyValue = Object.keys(formValue).filter(
+      (key) => formValue[key] === ""
+    );
+
+    emptyValue.forEach((fieldName) => {
+      dispatch(setErrorFiled({ fileName: fieldName, isEmpty: true }));
+    });
   };
 
   return (
