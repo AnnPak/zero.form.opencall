@@ -43,7 +43,7 @@ export const submitForm = createAsyncThunk(
       "POST"
     );
   }
-)
+);
 
 const formSlice = createSlice({
   name: "RootReducer",
@@ -88,8 +88,8 @@ const formSlice = createSlice({
           ...state?.files,
           [filedType]: [
             {
-              'url': file_future_url,
-            }
+              url: file_future_url,
+            },
           ],
         };
 
@@ -124,22 +124,30 @@ const formSlice = createSlice({
         state.formError = false;
       })
       .addCase(submitForm.fulfilled, (state, action) => {
-        console.log(action)
+        console.log(action);
         state.formSending = false;
         state.formSuccess = true;
         state.formError = false;
+
+        state.uploadStatus = {};
+        state.files = {};
+        state.errorFileds = {};
       })
 
       .addCase(submitForm.rejected, (state) => {
         state.formSending = false;
         state.formSuccess = false;
         state.formError = true;
-      })
+      });
   },
 });
 
 const { actions, reducer } = formSlice;
 
-export const { clearFileState, setErrorFiled, changeUploadStatus } = actions;
+export const {
+  clearFileState,
+  setErrorFiled,
+  changeUploadStatus,
+} = actions;
 
 export default reducer;
