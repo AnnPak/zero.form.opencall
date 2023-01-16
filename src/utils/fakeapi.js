@@ -5,7 +5,6 @@ export const data = [
         "display_description": "Submit your digital fashion piece here.\nDetailed requirements:\n<a href=\"https://platform.zero10.app\">https://platform.zero10.app</a>",
         "fields": [
             {
-                "field_name":"name",
                 "field_type": "text",
                 "field_placeholder": 'Disappearing Pants',
                 "display_title": "Item name",
@@ -16,38 +15,28 @@ export const data = [
             },
 
             {
-                "field_name":"description",
                 "field_type": "textarea",
                 "field_placeholder": 'Add a description',
-                "display_title": "Describe the item",
+                "display_title": "Description",
                 "display_subtitle": "Whats's the name of the item?",
                 "display_description": "<p>Good description: \"This item is inspired by my grandmother's collection of antique rugs and the sunny spring days spent in her garden.\" <br><br>Bad description: \"short jacket\".</p>",
                 "required": true,
                 "invalid_feedback": 'Enter a description of the item'
             },
             {
-                "field_name":"3ditem",
                 "field_type": "file",
-                "display_title": "ZPRJ file (3D Item) link",
-                "display_subtitle": "ZPRJ file",
+                "display_title": "Hi-res preview",
+                "display_subtitle": "Hi-res preview file",
                 "display_description": "<p>Garment project made in CLO or Marvelous</p>",
                 "required": true,
-                "invalid_feedback": 'Add the ZPrj file'
-            },
-            {
-                "field_name":"3ditem2",
-                "field_type": "file",
-                "display_title": "ZPRJ2 file (3D Item) link",
-                "display_subtitle": "ZPRJ2 file",
-                "display_description": "<p>Garment project made in CLO or Marvelous</p>",
-                "required": true,
-                "invalid_feedback": 'Add the ZPrj file'
+                "invalid_feedback": 'Add the Hi-res preview file'
             },
             {
                 "field_type": "hidden",
                 "field_name": "Submission type",
+                "display_title": "Submission type",
                 "required": true,
-                "value": "high-poly"
+                "value": "High-poly"
             }
         ]
         
