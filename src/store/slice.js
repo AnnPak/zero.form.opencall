@@ -57,12 +57,22 @@ const formSlice = createSlice({
       };
     },
     setErrorFiled: (state, action) => {
-      const { fileName, isEmpty } = action.payload;
-      console.log(action.payload);
-      state.errorFileds = {
-        ...state?.errorFileds,
-        [fileName]: isEmpty,
-      };
+      const { emptyValue, isEmpty } = action.payload;
+
+      if(Array.isArray(emptyValue)){
+        emptyValue.forEach((fieldName) => {
+          state.errorFileds = {
+            ...state?.errorFileds,
+            [fieldName]: isEmpty,
+          };
+        });
+      }else{
+        state.errorFileds = {
+          ...state?.errorFileds,
+          [emptyValue]: isEmpty,
+        };
+      }
+     
     },
     clearFileState: (state, action) => {
       state.files = {
@@ -86,11 +96,9 @@ const formSlice = createSlice({
 
         state.files = {
           ...state?.files,
-          [filedType]: [
-            {
-              url: file_future_url,
-            },
-          ],
+          [filedType]: [{
+            url: file_future_url,
+          },],
         };
 
         state.uploadStatus = {
@@ -144,10 +152,6 @@ const formSlice = createSlice({
 
 const { actions, reducer } = formSlice;
 
-export const {
-  clearFileState,
-  setErrorFiled,
-  changeUploadStatus,
-} = actions;
+export const { clearFileState, setErrorFiled, changeUploadStatus } = actions;
 
 export default reducer;

@@ -30,7 +30,7 @@ export const UploadField = (props) => {
     };
 
     const ClearInput = (fileName) => {
-        dispatch(setErrorFiled({ fileName: fileName, isEmpty: false }));
+        dispatch(setErrorFiled({ emptyValue: fileName, isEmpty: false }));
         dispatch(clearFileState(fileName)); //очищаю данные файла если они были
         dispatch(changeUploadStatus({ fileName: fileName, status: "idle" })); 
         

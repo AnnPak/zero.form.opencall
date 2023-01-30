@@ -1,40 +1,45 @@
-import { useEffect, useState,  } from "react";
+import { useEffect, useState, } from "react";
 import { useParams, useSearchParams, useNavigate } from "react-router-dom";
 
 import { UploadField } from "../upload-field/upload-field";
 import { data } from "../../utils/fakeapi";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Preloader from "../preloaders/preloader";
 import FormComponent from "../form-component/form-component";
 
 import styles from "./form-container.module.scss";
 import { createHtml } from "../../utils/utils";
+import { setErrorFiled } from "../../store/slice";
 
 const FormContainer = () => {
   const [formData, setFormData] = useState(null);
   const [formValue, setFormValue] = useState({}); //массив значений полей формы и полей upload
   const [isLoading, setIsLoading] = useState(false);
   const { userKey } = useParams();
-  const { files } = useSelector((store) => store.RootReducer);
+  const { files, errorFileds } = useSelector((store) => store.RootReducer);
 
   // eslint-disable-next-line
   const [searchParams, setSearchParams] = useSearchParams();
+
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // По get параметру определяем тип формы
   useEffect(() => {
     const formParam = searchParams.get("form_type");
 
-    if (formParam !== "highPoly" && formParam !== "lowPoly") {
-      return navigate("/error");
+    switch (formParam) {
+      case "highPoly":
+        setFormData(data.filter((form) => form.type === "high-poly"));
+        break;
+      case "lowPoly":
+        setFormData(data.filter((form) => form.type === "low-poly"));
+        break
+      default:
+        return navigate("/error");
     }
-    formParam === "highPoly" &&
-      setFormData(data.filter((form) => form.type === "high-poly"));
-    formParam === "lowPoly" &&
-      setFormData(data.filter((form) => form.type === "low-poly"));
 
-    // eslint-disable-next-line
-  }, [searchParams]);
+  }, [navigate, searchParams]);
 
   // Добавляем данные файлов в formValue
   useEffect(() => {
@@ -58,6 +63,9 @@ const FormContainer = () => {
 
   const handleForm = (name, value) => {
     setFormValue({ ...formValue, [name]: value });
+    if(errorFileds[`${name}`]){
+      dispatch(setErrorFiled({ emptyValue: `${name}`, isEmpty: false }));
+    }
   };
 
   return (
