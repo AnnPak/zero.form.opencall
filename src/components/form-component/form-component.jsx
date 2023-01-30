@@ -1,3 +1,7 @@
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { setErrorFiled, submitForm } from "../../store/slice";
+import { useNavigate } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
 import classnames from "classnames";
 
@@ -5,10 +9,6 @@ import TextInput from "../text-field/text-field";
 import { createHtml } from "../../utils/utils";
 
 import styles from "./form.module.scss";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { setErrorFiled, submitForm } from "../../store/slice";
-import { useNavigate } from "react-router-dom";
 
 const FormComponent = (props) => {
   const { formData, handleForm, userKey, setIsLoading, formValue } = props;
@@ -17,12 +17,9 @@ const FormComponent = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    setValidated(true);
-    setIsLoading(true);
-
-    const isEmptyFileds = Object.entries(formValue).some(([key, objects]) => {
+  //проверка на пустату обязательных полей
+  const isEmptyFileds = (formValue, formData) => {
+    return Object.entries(formValue).some(([key, objects]) => {
       if (
         formData[0].fields.find(
           (filed) => filed.display_title === key && filed.required === true
@@ -33,15 +30,19 @@ const FormComponent = (props) => {
       }
       return false;
     });
+  };
 
-    if (isEmptyFileds) {
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setValidated(true);
+    setIsLoading(true);
+
+    //если пустые поля есть, выводим ошибку
+    if (isEmptyFileds(formValue, formData)) {
       event.stopPropagation();
-      setIsLoading(false);
 
-      //если пустые поля есть, выводим ошибку
-      if (isEmptyFileds) {
-        showFieldError(formValue);
-      }
+      setIsLoading(false);
+      showFieldError(formValue);
     } else {
       submitFormRequest(formValue);
     }
@@ -77,10 +78,8 @@ const FormComponent = (props) => {
     const emptyValue = Object.keys(formValue).filter(
       (key) => formValue[key] === ""
     );
-
-    emptyValue.forEach((fieldName) => {
-      dispatch(setErrorFiled({ fileName: fieldName, isEmpty: true }));
-    });
+    
+    dispatch(setErrorFiled({ emptyValue: emptyValue, isEmpty: true }));
   };
 
   return (
@@ -108,7 +107,6 @@ const FormComponent = (props) => {
           return null;
         }
       })}
-
       <Form.Control type="hidden" name="user" value={userKey} />
       <div
         className={classnames(

@@ -27,7 +27,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy-script": "npm run build && scp -r ./build/* root@185.200.243.155:/home/demo/web/zeroform.demoserver.website/public_html" 
+    "deploy-script": "npm run build && scp -r ./build/* root@185.200.243.155:/home/demo/web/zeroform.demoserver.website/public_html"
   },
   "eslintConfig": {
     "extends": [
@@ -46,5 +46,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "prettier": "2.8.3"
   }
 }
