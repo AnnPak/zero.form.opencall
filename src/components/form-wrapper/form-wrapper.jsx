@@ -1,4 +1,4 @@
-import { useEffect, useState, } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useSearchParams, useNavigate } from "react-router-dom";
 
 import { UploadField } from "../upload-field/upload-field";
@@ -34,11 +34,10 @@ const FormContainer = () => {
         break;
       case "lowPoly":
         setFormData(data.filter((form) => form.type === "low-poly"));
-        break
+        break;
       default:
         return navigate("/error");
     }
-
   }, [navigate, searchParams]);
 
   // Добавляем данные файлов в formValue
@@ -48,6 +47,8 @@ const FormContainer = () => {
 
   // при изменении formData обновляем formValue
   useEffect(() => {
+    const AuthorParam = searchParams.get("prefill_Author");
+
     formData &&
       formData[0].fields.map((element) => {
         const value = {
@@ -59,11 +60,16 @@ const FormContainer = () => {
           ...value,
         }));
       });
-  }, [formData]);
+
+    setFormValue((formValuePrev) => ({
+      ...formValuePrev,
+      Author: [AuthorParam],
+    }));
+  }, [formData, searchParams]);
 
   const handleForm = (name, value) => {
     setFormValue({ ...formValue, [name]: value });
-    if(errorFileds[`${name}`]){
+    if (errorFileds[`${name}`]) {
       dispatch(setErrorFiled({ emptyValue: `${name}`, isEmpty: false }));
     }
   };

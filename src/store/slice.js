@@ -24,7 +24,7 @@ export const putFile = createAsyncThunk(
     await fetch(response.pre_signed_url, {
       method: "PUT",
       body: file,
-    }).then((res) => console.log(res));
+    })
 
     return {
       pre_signed_url: response.pre_signed_url,
@@ -59,20 +59,19 @@ const formSlice = createSlice({
     setErrorFiled: (state, action) => {
       const { emptyValue, isEmpty } = action.payload;
 
-      if(Array.isArray(emptyValue)){
+      if (Array.isArray(emptyValue)) {
         emptyValue.forEach((fieldName) => {
           state.errorFileds = {
             ...state?.errorFileds,
             [fieldName]: isEmpty,
           };
         });
-      }else{
+      } else {
         state.errorFileds = {
           ...state?.errorFileds,
           [emptyValue]: isEmpty,
         };
       }
-     
     },
     clearFileState: (state, action) => {
       state.files = {
@@ -96,9 +95,11 @@ const formSlice = createSlice({
 
         state.files = {
           ...state?.files,
-          [filedType]: [{
-            url: file_future_url,
-          },],
+          [filedType]: [
+            {
+              url: file_future_url,
+            },
+          ],
         };
 
         state.uploadStatus = {
@@ -132,7 +133,6 @@ const formSlice = createSlice({
         state.formError = false;
       })
       .addCase(submitForm.fulfilled, (state, action) => {
-        console.log(action);
         state.formSending = false;
         state.formSuccess = true;
         state.formError = false;
