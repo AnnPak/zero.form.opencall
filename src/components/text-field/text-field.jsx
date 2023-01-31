@@ -16,7 +16,6 @@ const TextInput = (props) => {
     handleForm,
     error,
     validationCustom,
-    invalidFeedback,
   } = props;
 
   const { errorFileds } = useSelector((store) => store.RootReducer);
@@ -48,7 +47,7 @@ const TextInput = (props) => {
       {errorFileds?.[title] && (
         <>
           <Form.Text className={styles.invalidFeedback}>
-            {invalidFeedback ? invalidFeedback : "This is a required field"}
+            This is a required field
           </Form.Text>
         </>
       )}
