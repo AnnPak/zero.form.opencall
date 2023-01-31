@@ -17,15 +17,16 @@ const FormComponent = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const findRequiredField = (key) => {
+    return formData[0].fields.find(
+      (filed) => filed.display_title === key && filed.required === true
+    );
+  };
+
   //проверка на пустату обязательных полей
   const isEmptyFileds = (formValue, formData) => {
     return Object.entries(formValue).some(([key, objects]) => {
-      if (
-        formData[0].fields.find(
-          (filed) => filed.display_title === key && filed.required === true
-        ) &&
-        objects === ""
-      ) {
+      if (findRequiredField(key) && objects === "") {
         return true;
       }
       return false;
@@ -76,9 +77,9 @@ const FormComponent = (props) => {
 
   const showFieldError = (formValue) => {
     const emptyValue = Object.keys(formValue).filter(
-      (key) => formValue[key] === ""
+      (key) => formValue[key] === "" && findRequiredField(key)
     );
-    
+
     dispatch(setErrorFiled({ emptyValue: emptyValue, isEmpty: true }));
   };
 
