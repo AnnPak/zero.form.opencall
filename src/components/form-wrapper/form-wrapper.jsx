@@ -111,7 +111,6 @@ const FormContainer = () => {
                   isRequired={element.required}
                   inputName={`upload-field-${i}`}
                   description={createHtml(element.display_description)}
-                  invalidFeedback={element.invalid_feedback}
                 />
               );
             } else {

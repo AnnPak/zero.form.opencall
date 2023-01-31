@@ -101,7 +101,6 @@ const FormComponent = (props) => {
               value={element.value}
               handleForm={handleForm}
               validationCustom={`validationCustom${i}`}
-              invalidFeedback={element.invalid_feedback}
             />
           );
         } else {

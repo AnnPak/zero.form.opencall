@@ -20,7 +20,6 @@ export const UploadField = (props) => {
     subtitle,
     inputName,
     description,
-    invalidFeedback,
     isRequired,
   } = props;
   const { uploadStatus, errorFileds } = useSelector(
@@ -108,7 +107,7 @@ export const UploadField = (props) => {
       {errorFileds?.[title] && (
         <>
           <Form.Text className={styles.invalidFeedback}>
-            {invalidFeedback ? invalidFeedback : "This is a required field"}
+            This is a required field
           </Form.Text>
         </>
       )}
