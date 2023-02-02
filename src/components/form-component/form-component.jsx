@@ -19,7 +19,7 @@ const FormComponent = (props) => {
 
   const findRequiredField = (key) => {
     return formData[0].fields.find(
-      (filed) => filed.display_title === key && filed.required === true
+      (filed) => filed.field_name === key && filed.required === true
     );
   };
 
@@ -92,12 +92,12 @@ const FormComponent = (props) => {
               key={`text-field-${i}`}
               isRequired={element.required}
               title={element.display_title}
-              subtitle={element.display_subtitle}
+              name={element.field_name}
+              subtitle={element.display_description}
               inputType={element.field_type}
               inputName={`text-field-${i}`}
               inputPlaceholder={element.field_placeholder}
-              display={element.display}
-              description={createHtml(element.display_description)}
+              description={createHtml(element.display_hint)}
               value={element.value}
               handleForm={handleForm}
               validationCustom={`validationCustom${i}`}

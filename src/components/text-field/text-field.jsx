@@ -7,6 +7,7 @@ const TextInput = (props) => {
   const {
     isRequired,
     title,
+    name,
     subtitle,
     inputType,
     inputName,
@@ -42,9 +43,9 @@ const TextInput = (props) => {
         placeholder={inputPlaceholder}
         value={value}
         error={error}
-        onChange={(e) => handleForm(title, e.target.value)}
+        onChange={(e) => handleForm(name, e.target.value)}
       />
-      {errorFileds?.[title] && (
+      {errorFileds?.[name] && (
         <>
           <Form.Text className={styles.invalidFeedback}>
             This is a required field

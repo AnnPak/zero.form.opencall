@@ -52,7 +52,7 @@ const FormContainer = () => {
     formData &&
       formData[0].fields.map((element) => {
         const value = {
-          [element.display_title]: element.value ? element.value : "",
+          [element.field_name]: element.value ? element.value : "",
         };
 
         return setFormValue((formValuePrev) => ({
@@ -84,11 +84,11 @@ const FormContainer = () => {
       {formData && !isLoading && (
         <section className={styles.uploadGarment}>
           <div className={styles.formHeader}>
-            <h1 className={styles.title}>{formData[0].display_title}</h1>
+            <h1 className={styles.title}>{formData[0].field_name}</h1>
             <h2
               className={styles.subtitle}
               dangerouslySetInnerHTML={createHtml(
-                formData[0].display_description
+                formData[0].display_hint
               )}
             />
           </div>
@@ -107,10 +107,11 @@ const FormContainer = () => {
                 <UploadField
                   key={`upload-field-${i}`}
                   title={element.display_title}
-                  subtitle={element.display_subtitle}
+                  name={element.field_name}
+                  subtitle={element.display_description}
                   isRequired={element.required}
                   inputName={`upload-field-${i}`}
-                  description={createHtml(element.display_description)}
+                  description={createHtml(element.display_hint)}
                 />
               );
             } else {

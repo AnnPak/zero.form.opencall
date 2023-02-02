@@ -17,6 +17,7 @@ import styles from "./upload-field.module.scss";
 export const UploadField = (props) => {
   const {
     title,
+    name,
     subtitle,
     inputName,
     description,
@@ -31,7 +32,7 @@ export const UploadField = (props) => {
 
   const uploadFile = (e) => {
     e.preventDefault();
-    dispatch(putFile({ file, fileName: title }));
+    dispatch(putFile({ file, fileName: name }));
   };
 
   const ClearInput = (fileName) => {
@@ -42,13 +43,13 @@ export const UploadField = (props) => {
   };
 
   const addFile = (event) => {
-    ClearInput(title);
+    ClearInput(name);
     setFile(event.target.files[0]);
   };
 
   const RemoveFile = () => {
     document.getElementById(inputName).reset();
-    ClearInput(title);
+    ClearInput(name);
     setFile(null);
   };
 
@@ -64,7 +65,7 @@ export const UploadField = (props) => {
         <div
           className={classNames(
             styles.uploadGroup,
-            errorFileds?.[title] && styles.uploadGroupError
+            errorFileds?.[name] && styles.uploadGroupError
           )}
         >
           <Form.Control
@@ -78,23 +79,23 @@ export const UploadField = (props) => {
           />
           <div
             className={classNames(
-              uploadStatus[title] === "error" && styles.errorBtn,
-              uploadStatus[title] === "success" && styles.dNone,
+              uploadStatus[name] === "error" && styles.errorBtn,
+              uploadStatus[name] === "success" && styles.dNone,
               styles.uploadBtn
             )}
           >
             <Button type="submit" variant="dark">
-              {uploadStatus[title] === "error" && "Error"}
-              {uploadStatus[title] === "loading" && <BtnPreloader />}
-              {uploadStatus[title] !== "error" &&
-                uploadStatus[title] !== "loading" &&
+              {uploadStatus[name] === "error" && "Error"}
+              {uploadStatus[name] === "loading" && <BtnPreloader />}
+              {uploadStatus[name] !== "error" &&
+                uploadStatus[name] !== "loading" &&
                 "Upload"}
             </Button>
           </div>
 
           <div
             className={classNames(
-              uploadStatus[title] === "success" && styles.dBlock,
+              uploadStatus[name] === "success" && styles.dBlock,
               styles.trashBtn
             )}
           >
@@ -104,7 +105,7 @@ export const UploadField = (props) => {
           </div>
         </div>
       </Form.Group>
-      {errorFileds?.[title] && (
+      {errorFileds?.[name] && (
         <>
           <Form.Text className={styles.invalidFeedback}>
             This is a required field
